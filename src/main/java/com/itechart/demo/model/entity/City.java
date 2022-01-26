@@ -3,9 +3,7 @@ package com.itechart.demo.model.entity;
 
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,4 +15,5 @@ import javax.persistence.Table;
 public class City extends Identity {
 	@Column(name = "name", nullable = false)
 	private String name;
+
 }
