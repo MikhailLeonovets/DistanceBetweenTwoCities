@@ -9,12 +9,13 @@ create table city
 alter table city
     add primary key (id);
 
-create table city_city
+create table route
 (
     id             bigint auto_increment,
     first_city_id  bigint not null,
     second_city_id bigint not null,
     distance       float  not null,
+    primary key (first_city_id, second_city_id),
     constraint city_city_id_uindex
         unique (id),
     constraint first_city_fk
@@ -24,8 +25,5 @@ create table city_city
         foreign key (second_city_id) references city (id)
             on update cascade on delete cascade
 );
-
-alter table city_city
-    add primary key (id);
 
 

@@ -1,0 +1,12 @@
+INSERT INTO distance_between_cities.city (id, name) VALUES (1, 'Minsk');
+INSERT INTO distance_between_cities.city (id, name) VALUES (2, 'Gomel');
+INSERT INTO distance_between_cities.city (id, name) VALUES (3, 'Vitebsk');
+INSERT INTO distance_between_cities.city (id, name) VALUES (4, 'Brest');
+INSERT INTO distance_between_cities.city (id, name) VALUES (5, 'Grodno');
+INSERT INTO distance_between_cities.city (id, name) VALUES (6, 'Mogilev');
+INSERT INTO distance_between_cities.city (id, name) VALUES (7, 'Borisov');
+INSERT INTO distance_between_cities.city (id, name) VALUES (8, 'Bobruisk');
+INSERT INTO distance_between_cities.city (id, name) VALUES (9, 'Pinsk');
+INSERT INTO distance_between_cities.city (id, name) VALUES (10, 'Tokyo');
+INSERT INTO distance_between_cities.city (id, name) VALUES (11, 'Kawasaki');
+INSERT INTO distance_between_cities.city (id, name) VALUES (12, 'London');
