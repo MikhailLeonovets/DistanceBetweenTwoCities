@@ -24,5 +24,5 @@ public class Route extends Identity {
 	private City secondCity;
 
 	@Column(name = "distance")
-	private String distance;
+	private Float distance;
 }
