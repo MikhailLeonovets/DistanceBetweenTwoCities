@@ -1,32 +1,37 @@
 package com.itechart.demo.controller;
 
-import com.itechart.demo.model.entity.City;
-import com.itechart.demo.model.payload.request.Cities;
-import com.itechart.demo.model.payload.response.PathVariant;
+import com.itechart.demo.repository.entity.City;
 import com.itechart.demo.service.CityService;
-import com.itechart.demo.service.PathService;
-import com.itechart.demo.service.exception.PathNotFound;
-import lombok.RequiredArgsConstructor;
+import com.itechart.demo.service.PathCalculatorService;
+import com.itechart.demo.service.exception.PathNotFoundException;
+import com.itechart.demo.service.exception.RouteNotFoundException;
+import com.itechart.demo.service.model.Path;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
-@RequestMapping("/api")
-@RequiredArgsConstructor
+@RequestMapping("/path_calculator")
 public class Controller {
 	private final CityService cityService;
-	private final PathService pathService;
+	private final PathCalculatorService pathCalculatorService;
+
+	public Controller(CityService cityService, PathCalculatorService pathService) {
+		this.cityService = cityService;
+		this.pathCalculatorService = pathService;
+	}
 
 	@GetMapping
 	public List<City> getCities() {
 		return cityService.findAll();
 	}
 
-	@PostMapping
-	public PathVariant getPaths(@RequestBody Cities cities) throws PathNotFound {
-		City firstCity = cityService.getById(cities.getFirstCityId());
-		City secondCity = cityService.getById(cities.getSecondCityId());
-		return pathService.getPaths(firstCity, secondCity);
+	@GetMapping("/path/{firstCityId}/{secondCityId}")
+	public Set<Path> getPaths(@PathVariable Long firstCityId, @PathVariable Long secondCityId)
+			throws PathNotFoundException, RouteNotFoundException {
+		City firstCity = cityService.getById(firstCityId);
+		City secondCity = cityService.getById(secondCityId);
+		return pathCalculatorService.calculatePaths(firstCity, secondCity);
 	}
 }

@@ -1,6 +1,6 @@
 package com.itechart.demo.repository;
 
-import com.itechart.demo.model.entity.City;
+import com.itechart.demo.repository.entity.City;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

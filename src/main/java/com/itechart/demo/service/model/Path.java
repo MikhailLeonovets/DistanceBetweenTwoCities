@@ -1,6 +1,8 @@
-package com.itechart.demo.model.entity;
+package com.itechart.demo.service.model;
 
-import lombok.*;
+import com.itechart.demo.repository.entity.Route;
+import lombok.Data;
+
 
 import java.util.Set;
 

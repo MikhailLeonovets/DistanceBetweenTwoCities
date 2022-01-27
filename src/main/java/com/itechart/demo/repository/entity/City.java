@@ -1,7 +1,9 @@
-package com.itechart.demo.model.entity;
+package com.itechart.demo.repository.entity;
 
-
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.Hibernate;
 
 import javax.persistence.Column;

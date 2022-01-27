@@ -1,7 +1,7 @@
 package com.itechart.demo.repository;
 
-import com.itechart.demo.model.entity.City;
-import com.itechart.demo.model.entity.Route;
+import com.itechart.demo.repository.entity.City;
+import com.itechart.demo.repository.entity.Route;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

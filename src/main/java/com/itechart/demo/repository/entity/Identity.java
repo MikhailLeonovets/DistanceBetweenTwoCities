@@ -1,4 +1,4 @@
-package com.itechart.demo.model.entity;
+package com.itechart.demo.repository.entity;
 
 import lombok.Getter;
 import lombok.Setter;
