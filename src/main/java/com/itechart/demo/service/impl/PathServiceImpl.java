@@ -24,7 +24,6 @@ public class PathServiceImpl implements PathService {
 	private Set<Path> paths;
 	private PathVariant pathVariant;
 
-
 	@Override
 	public PathVariant getPaths(City firstCity, City secondCity) throws PathNotFound {
 		init();
