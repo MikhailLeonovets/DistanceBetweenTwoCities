@@ -28,4 +28,9 @@ public class CityServiceImpl implements CityService {
 		}
 		return optionalCity.get();
 	}
+
+	@Override
+	public City getById(Long id) {
+		return cityRepository.getById(id);
+	}
 }

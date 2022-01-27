@@ -1,8 +1,11 @@
 package com.itechart.demo.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 
 @NoArgsConstructor
@@ -13,16 +16,29 @@ import javax.persistence.*;
 @Entity
 @Table(name = "route")
 public class Route extends Identity {
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne
 	@JoinColumn(name = "first_city_id")
-	@ToString.Exclude
+	@JsonIgnore
 	private City firstCity;
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne
 	@JoinColumn(name = "second_city_id")
-	@ToString.Exclude
+	@JsonIgnore
 	private City secondCity;
 
 	@Column(name = "distance")
 	private Float distance;
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+		Route route = (Route) o;
+		return getId() != null && Objects.equals(getId(), route.getId());
+	}
+
+	@Override
+	public int hashCode() {
+		return getClass().hashCode();
+	}
 }
