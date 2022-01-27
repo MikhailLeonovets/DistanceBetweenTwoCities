@@ -1,6 +1,7 @@
 package com.itechart.demo.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import org.hibernate.Hibernate;
 
@@ -18,12 +19,12 @@ import java.util.Objects;
 public class Route extends Identity {
 	@ManyToOne
 	@JoinColumn(name = "first_city_id")
-	@JsonIgnore
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	private City firstCity;
 
 	@ManyToOne
 	@JoinColumn(name = "second_city_id")
-	@JsonIgnore
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	private City secondCity;
 
 	@Column(name = "distance")
