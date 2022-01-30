@@ -7,7 +7,7 @@ import com.itechart.demo.service.model.Path;
 
 import java.util.Set;
 
-public interface PathCalculatorService {
+public interface PathDepthFirstSearchCalculatorService {
 
 	Set<Path> calculatePaths(City firstCity, City secondCity) throws PathNotFoundException, RouteNotFoundException;
 

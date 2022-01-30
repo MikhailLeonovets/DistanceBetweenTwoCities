@@ -1,12 +1,12 @@
 package com.itechart.demo.service.impl;
 
 import com.itechart.demo.repository.entity.City;
-import com.itechart.demo.service.GraphService;
+import com.itechart.demo.service.GraphCityService;
 import com.itechart.demo.service.RouteService;
 import com.itechart.demo.service.exception.RouteNotFoundException;
 import com.itechart.demo.service.model.Path;
 import com.itechart.demo.repository.entity.Route;
-import com.itechart.demo.service.PathCalculatorService;
+import com.itechart.demo.service.PathDepthFirstSearchCalculatorService;
 import com.itechart.demo.service.exception.PathNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -16,13 +16,13 @@ import java.util.Set;
 import java.util.ArrayList;
 
 @Service
-public class PathDepthFirstSearchCalculatorService implements PathCalculatorService {
-	private final GraphService graphService;
+public class PathDepthFirstSearchCalculatorServiceImpl implements PathDepthFirstSearchCalculatorService {
+	private final GraphCityService graphService;
 	private final RouteService routeService;
 
 	private Set<Path> paths;
 
-	public PathDepthFirstSearchCalculatorService(GraphService graphService, RouteService routeService) {
+	public PathDepthFirstSearchCalculatorServiceImpl(GraphCityService graphService, RouteService routeService) {
 		this.graphService = graphService;
 		this.routeService = routeService;
 	}
@@ -30,16 +30,12 @@ public class PathDepthFirstSearchCalculatorService implements PathCalculatorServ
 	@Override
 	public Set<Path> calculatePaths(City firstCity, City secondCity) throws PathNotFoundException,
 			RouteNotFoundException {
-		init();
+		paths = new HashSet<>();
 		graphService.initGraphCity();
 		LinkedList<City> visitedCities = new LinkedList<>();
 		visitedCities.add(firstCity);
 		depthFirstSearch(visitedCities, secondCity);
 		return paths;
-	}
-
-	private void init() {
-		paths = new HashSet<>();
 	}
 
 	private void depthFirstSearch(LinkedList<City> visited, City lastCity) throws PathNotFoundException,

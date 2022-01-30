@@ -2,7 +2,7 @@ package com.itechart.demo.controller;
 
 import com.itechart.demo.repository.entity.City;
 import com.itechart.demo.service.CityService;
-import com.itechart.demo.service.PathCalculatorService;
+import com.itechart.demo.service.PathService;
 import com.itechart.demo.service.exception.PathNotFoundException;
 import com.itechart.demo.service.exception.RouteNotFoundException;
 import com.itechart.demo.service.model.Path;
@@ -18,11 +18,11 @@ import java.util.Set;
 @RequestMapping("/path-calculator")
 public class Controller {
 	private final CityService cityService;
-	private final PathCalculatorService pathCalculatorService;
+	private final PathService pathService;
 
-	public Controller(CityService cityService, PathCalculatorService pathService) {
+	public Controller(CityService cityService, PathService pathService) {
 		this.cityService = cityService;
-		this.pathCalculatorService = pathService;
+		this.pathService = pathService;
 	}
 
 	@GetMapping
@@ -35,6 +35,6 @@ public class Controller {
 			throws PathNotFoundException, RouteNotFoundException {
 		City firstCity = cityService.getById(firstCityId);
 		City secondCity = cityService.getById(secondCityId);
-		return pathCalculatorService.calculatePaths(firstCity, secondCity);
+		return pathService.getPaths(firstCity, secondCity);
 	}
 }
