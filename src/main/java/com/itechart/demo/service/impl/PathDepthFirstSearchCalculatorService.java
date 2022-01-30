@@ -1,9 +1,9 @@
 package com.itechart.demo.service.impl;
 
 import com.itechart.demo.repository.entity.City;
-import com.itechart.demo.service.DepthFirstSearchService;
+import com.itechart.demo.service.GraphService;
+import com.itechart.demo.service.RouteService;
 import com.itechart.demo.service.exception.RouteNotFoundException;
-import com.itechart.demo.service.model.Graph;
 import com.itechart.demo.service.model.Path;
 import com.itechart.demo.repository.entity.Route;
 import com.itechart.demo.service.PathCalculatorService;
@@ -16,20 +16,22 @@ import java.util.Set;
 import java.util.ArrayList;
 
 @Service
-public class PathDepthFirstSearchCalculatorServiceImpl implements PathCalculatorService, DepthFirstSearchService {
-	private final Graph graph;
+public class PathDepthFirstSearchCalculatorService implements PathCalculatorService {
+	private final GraphService graphService;
+	private final RouteService routeService;
 
 	private Set<Path> paths;
 
-	public PathDepthFirstSearchCalculatorServiceImpl(Graph graph) {
-		this.graph = graph;
+	public PathDepthFirstSearchCalculatorService(GraphService graphService, RouteService routeService) {
+		this.graphService = graphService;
+		this.routeService = routeService;
 	}
 
 	@Override
 	public Set<Path> calculatePaths(City firstCity, City secondCity) throws PathNotFoundException,
 			RouteNotFoundException {
 		init();
-		graph.init();
+		graphService.initGraphCity();
 		LinkedList<City> visitedCities = new LinkedList<>();
 		visitedCities.add(firstCity);
 		depthFirstSearch(visitedCities, secondCity);
@@ -40,10 +42,9 @@ public class PathDepthFirstSearchCalculatorServiceImpl implements PathCalculator
 		paths = new HashSet<>();
 	}
 
-	@Override
-	public void depthFirstSearch(LinkedList<City> visited, City lastCity) throws PathNotFoundException,
+	private void depthFirstSearch(LinkedList<City> visited, City lastCity) throws PathNotFoundException,
 			RouteNotFoundException {
-		LinkedList<City> adjacentCities = graph.getAdjacentCities(visited.getLast());
+		HashSet<City> adjacentCities = graphService.getAdjacentCities(visited.getLast());
 		for (City city : adjacentCities) {
 			if (visited.contains(city)) {
 				continue;
@@ -74,7 +75,7 @@ public class PathDepthFirstSearchCalculatorServiceImpl implements PathCalculator
 			throw new PathNotFoundException();
 		}
 		for (int i = 1; i < cities.size(); i++) {
-			Route route = graph.findRouteBetweenCities(visited.get(i - 1).getId(), visited.get(i).getId());
+			Route route = routeService.findRouteBetweenCities(visited.get(i - 1), visited.get(i));
 			totalDistance += route.getDistance();
 			routes.add(route);
 		}

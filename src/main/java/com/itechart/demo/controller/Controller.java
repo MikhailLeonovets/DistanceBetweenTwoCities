@@ -6,13 +6,16 @@ import com.itechart.demo.service.PathCalculatorService;
 import com.itechart.demo.service.exception.PathNotFoundException;
 import com.itechart.demo.service.exception.RouteNotFoundException;
 import com.itechart.demo.service.model.Path;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/path_calculator")
+@RequestMapping("/path-calculator")
 public class Controller {
 	private final CityService cityService;
 	private final PathCalculatorService pathCalculatorService;
