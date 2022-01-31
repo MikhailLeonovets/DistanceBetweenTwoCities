@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 
@@ -18,6 +19,7 @@ public class GraphCity {
 	private Map<City, LinkedHashSet<Route>> graph;
 
 	public GraphCity() {
+		graph = new HashMap<>();
 	}
 
 }

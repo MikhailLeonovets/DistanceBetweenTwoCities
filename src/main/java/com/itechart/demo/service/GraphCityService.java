@@ -6,8 +6,6 @@ import java.util.HashSet;
 
 public interface GraphCityService {
 
-	void initGraphCity();
-
 	HashSet<City> getAdjacentCities(City city);
 
 }

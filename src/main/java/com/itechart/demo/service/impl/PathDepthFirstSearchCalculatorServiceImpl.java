@@ -4,6 +4,7 @@ import com.itechart.demo.repository.entity.City;
 import com.itechart.demo.service.GraphCityService;
 import com.itechart.demo.service.RouteService;
 import com.itechart.demo.service.exception.RouteNotFoundException;
+import com.itechart.demo.service.initializer.GraphCityInitializer;
 import com.itechart.demo.service.model.Path;
 import com.itechart.demo.repository.entity.Route;
 import com.itechart.demo.service.PathDepthFirstSearchCalculatorService;
@@ -31,7 +32,6 @@ public class PathDepthFirstSearchCalculatorServiceImpl implements PathDepthFirst
 	public Set<Path> calculatePaths(City firstCity, City secondCity) throws PathNotFoundException,
 			RouteNotFoundException {
 		paths = new HashSet<>();
-		graphService.initGraphCity();
 		LinkedList<City> visitedCities = new LinkedList<>();
 		visitedCities.add(firstCity);
 		depthFirstSearch(visitedCities, secondCity);
