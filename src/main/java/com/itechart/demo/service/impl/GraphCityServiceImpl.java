@@ -34,6 +34,4 @@ public class GraphCityServiceImpl implements GraphCityService {
 		}
 		return adjacentCities;
 	}
-
-
 }

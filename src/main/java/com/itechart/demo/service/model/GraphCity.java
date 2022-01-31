@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.annotation.ApplicationScope;
 
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -15,6 +16,7 @@ import java.util.Map;
 @Setter
 @Component
 @Scope("singleton")
+@ApplicationScope
 public class GraphCity {
 	private Map<City, LinkedHashSet<Route>> graph;
 
