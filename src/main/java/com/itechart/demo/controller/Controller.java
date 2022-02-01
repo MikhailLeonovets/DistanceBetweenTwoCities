@@ -3,6 +3,7 @@ package com.itechart.demo.controller;
 import com.itechart.demo.repository.entity.City;
 import com.itechart.demo.service.CityService;
 import com.itechart.demo.service.PathService;
+import com.itechart.demo.service.exception.CityNotFoundException;
 import com.itechart.demo.service.exception.PathNotFoundException;
 import com.itechart.demo.service.exception.RouteNotFoundException;
 import com.itechart.demo.service.model.Path;
@@ -32,7 +33,7 @@ public class Controller {
 
 	@GetMapping("/path/{firstCityId}/{secondCityId}")
 	public Set<Path> getPaths(@PathVariable Long firstCityId, @PathVariable Long secondCityId)
-			throws PathNotFoundException, RouteNotFoundException {
+			throws PathNotFoundException, RouteNotFoundException, CityNotFoundException {
 		City firstCity = cityService.getById(firstCityId);
 		City secondCity = cityService.getById(secondCityId);
 		return pathService.getPaths(firstCity, secondCity);

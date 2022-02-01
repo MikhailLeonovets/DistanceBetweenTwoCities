@@ -2,9 +2,9 @@ package com.itechart.demo.service.impl;
 
 import com.itechart.demo.repository.entity.City;
 import com.itechart.demo.service.GraphCityService;
-import com.itechart.demo.service.RouteService;
+import com.itechart.demo.service.cache.RouteCache;
+import com.itechart.demo.service.exception.CityNotFoundException;
 import com.itechart.demo.service.exception.RouteNotFoundException;
-import com.itechart.demo.service.initializer.GraphCityInitializer;
 import com.itechart.demo.service.model.Path;
 import com.itechart.demo.repository.entity.Route;
 import com.itechart.demo.service.PathDepthFirstSearchCalculatorService;
@@ -13,24 +13,25 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Optional;
 import java.util.Set;
 import java.util.ArrayList;
 
 @Service
 public class PathDepthFirstSearchCalculatorServiceImpl implements PathDepthFirstSearchCalculatorService {
 	private final GraphCityService graphService;
-	private final RouteService routeService;
+	private final RouteCache routeCache;
 
 	private Set<Path> paths;
 
-	public PathDepthFirstSearchCalculatorServiceImpl(GraphCityService graphService, RouteService routeService) {
+	public PathDepthFirstSearchCalculatorServiceImpl(GraphCityService graphService, RouteCache routeCache) {
 		this.graphService = graphService;
-		this.routeService = routeService;
+		this.routeCache = routeCache;
 	}
 
 	@Override
 	public Set<Path> calculatePaths(City firstCity, City secondCity) throws PathNotFoundException,
-			RouteNotFoundException {
+			RouteNotFoundException, CityNotFoundException {
 		paths = new HashSet<>();
 		LinkedList<City> visitedCities = new LinkedList<>();
 		visitedCities.add(firstCity);
@@ -39,7 +40,7 @@ public class PathDepthFirstSearchCalculatorServiceImpl implements PathDepthFirst
 	}
 
 	private void depthFirstSearch(LinkedList<City> visited, City lastCity) throws PathNotFoundException,
-			RouteNotFoundException {
+			RouteNotFoundException, CityNotFoundException {
 		HashSet<City> adjacentCities = graphService.getAdjacentCities(visited.getLast());
 		for (City city : adjacentCities) {
 			if (visited.contains(city)) {
@@ -71,7 +72,14 @@ public class PathDepthFirstSearchCalculatorServiceImpl implements PathDepthFirst
 			throw new PathNotFoundException();
 		}
 		for (int i = 1; i < cities.size(); i++) {
-			Route route = routeService.findRouteBetweenCities(visited.get(i - 1), visited.get(i));
+			int currentId = i;
+			Optional<Route> optionalRoute = routeCache.getRoutes().stream()
+					.filter(route1 -> route1.getFirstCity().equals(visited.get(currentId - 1))
+							&& route1.getSecondCity().equals(visited.get(currentId))).findAny();
+			if (optionalRoute.isEmpty()) {
+				throw new RouteNotFoundException();
+			}
+			Route route = optionalRoute.get();
 			totalDistance += route.getDistance();
 			routes.add(route);
 		}

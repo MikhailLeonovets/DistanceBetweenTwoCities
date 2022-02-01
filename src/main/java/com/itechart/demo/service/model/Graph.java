@@ -1,7 +1,5 @@
 package com.itechart.demo.service.model;
 
-import com.itechart.demo.repository.entity.City;
-import com.itechart.demo.repository.entity.Route;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.context.annotation.Scope;
@@ -17,10 +15,10 @@ import java.util.Map;
 @Component
 @Scope("singleton")
 @ApplicationScope
-public class GraphCity {
-	private Map<City, LinkedHashSet<Route>> graph;
+public class Graph {
+	private Map<String, LinkedHashSet<String>> graph;
 
-	public GraphCity() {
+	public Graph() {
 		graph = new HashMap<>();
 	}
 

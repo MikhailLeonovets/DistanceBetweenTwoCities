@@ -3,6 +3,7 @@ package com.itechart.demo.service.impl;
 import com.itechart.demo.repository.entity.City;
 import com.itechart.demo.service.PathDepthFirstSearchCalculatorService;
 import com.itechart.demo.service.PathService;
+import com.itechart.demo.service.exception.CityNotFoundException;
 import com.itechart.demo.service.exception.PathNotFoundException;
 import com.itechart.demo.service.exception.RouteNotFoundException;
 import com.itechart.demo.service.model.Path;
@@ -19,7 +20,12 @@ public class PathServiceImpl implements PathService {
 	}
 
 	@Override
-	public Set<Path> getPaths(City firstCity, City secondCity) throws PathNotFoundException, RouteNotFoundException {
-		return pathDepthFirstSearchCalculatorService.calculatePaths(firstCity, secondCity);
+	public Set<Path> getPaths(City firstCity, City secondCity) throws PathNotFoundException, RouteNotFoundException,
+			CityNotFoundException {
+		Set<Path> paths = pathDepthFirstSearchCalculatorService.calculatePaths(firstCity, secondCity);
+		if (paths.size() == 0){
+			throw new PathNotFoundException();
+		}
+		return paths;
 	}
 }
