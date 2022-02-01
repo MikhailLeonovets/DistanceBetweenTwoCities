@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.annotation.ApplicationScope;
 
 import java.util.List;
 
@@ -13,6 +14,7 @@ import java.util.List;
 @Getter
 @Component
 @Scope("singleton")
+@ApplicationScope
 public class RouteCash {
 	private final RouteRepository routeRepository;
 
