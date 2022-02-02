@@ -13,7 +13,6 @@ import java.io.Serializable;
 @Setter
 @MappedSuperclass
 public class Identity implements Serializable {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;

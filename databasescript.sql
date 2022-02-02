@@ -1,4 +1,6 @@
-create table city
+create database distance_between_cities;
+
+create table distance_between_cities.city
 (
     id   bigint auto_increment,
     name varchar(255) not null,
@@ -6,10 +8,10 @@ create table city
         unique (id)
 );
 
-alter table city
+alter table distance_between_cities.city
     add primary key (id);
 
-create table route
+create table distance_between_cities.route
 (
     id             bigint auto_increment,
     first_city_id  bigint not null,

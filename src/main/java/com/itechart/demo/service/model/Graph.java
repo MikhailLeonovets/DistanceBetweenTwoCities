@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.ApplicationScope;
 
-import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 
@@ -19,7 +18,5 @@ public class Graph {
 	private Map<String, LinkedHashSet<String>> graph;
 
 	public Graph() {
-		graph = new HashMap<>();
 	}
-
 }
