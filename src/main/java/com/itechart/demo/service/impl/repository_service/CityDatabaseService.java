@@ -10,10 +10,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Service("cityServiceImpl")
-public class CityServiceImpl implements CityService {
+public class CityDatabaseService implements CityService {
 	private final CityRepository cityRepository;
 
-	public CityServiceImpl(CityRepository cityRepository) {
+	public CityDatabaseService(CityRepository cityRepository) {
 		this.cityRepository = cityRepository;
 	}
 

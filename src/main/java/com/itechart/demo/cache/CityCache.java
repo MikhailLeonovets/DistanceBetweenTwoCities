@@ -1,4 +1,4 @@
-package com.itechart.demo.service.cache;
+package com.itechart.demo.cache;
 
 import com.itechart.demo.repository.entity.City;
 import lombok.Getter;
@@ -16,4 +16,5 @@ import java.util.List;
 @ApplicationScope
 public class CityCache {
 	private List<City> cities;
+
 }

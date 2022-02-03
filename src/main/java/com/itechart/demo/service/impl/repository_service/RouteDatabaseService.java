@@ -11,10 +11,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Service("routeServiceImpl")
-public class RouteServiceImpl implements RouteService {
+public class RouteDatabaseService implements RouteService {
 	private final RouteRepository routeRepository;
 
-	public RouteServiceImpl(RouteRepository routeRepository) {
+	public RouteDatabaseService(RouteRepository routeRepository) {
 		this.routeRepository = routeRepository;
 	}
 

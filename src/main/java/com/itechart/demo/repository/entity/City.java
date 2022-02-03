@@ -1,5 +1,6 @@
 package com.itechart.demo.repository.entity;
 
+import com.itechart.demo.repository.entity.mapped_super_class.Identity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

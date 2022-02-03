@@ -1,4 +1,4 @@
-package com.itechart.demo.service.cache;
+package com.itechart.demo.cache;
 
 import com.itechart.demo.repository.entity.Route;
 import lombok.Getter;

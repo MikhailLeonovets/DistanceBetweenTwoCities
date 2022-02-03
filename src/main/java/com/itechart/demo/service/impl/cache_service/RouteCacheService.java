@@ -3,9 +3,9 @@ package com.itechart.demo.service.impl.cache_service;
 import com.itechart.demo.repository.entity.City;
 import com.itechart.demo.repository.entity.Route;
 import com.itechart.demo.service.RouteService;
-import com.itechart.demo.service.cache.RouteCache;
+import com.itechart.demo.cache.RouteCache;
 import com.itechart.demo.service.exception.RouteNotFoundException;
-import com.itechart.demo.service.initializer.RouteCacheInitializer;
+import com.itechart.demo.cache.initializer.RouteCacheInitializer;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

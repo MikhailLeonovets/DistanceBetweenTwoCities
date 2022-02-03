@@ -1,4 +1,4 @@
-package com.itechart.demo.service.impl.cache_service;
+package com.itechart.demo.service.impl;
 
 import com.itechart.demo.repository.entity.City;
 import com.itechart.demo.repository.entity.Route;
@@ -9,13 +9,12 @@ import com.itechart.demo.service.RouteService;
 import com.itechart.demo.service.exception.CityNotFoundException;
 import com.itechart.demo.service.exception.PathNotFoundException;
 import com.itechart.demo.service.exception.RouteNotFoundException;
-import com.itechart.demo.service.initializer.GraphCityInitializer;
+import com.itechart.demo.service.converter.CitiesAndRoutesToGraphConverter;
 import com.itechart.demo.service.model.Graph;
 import com.itechart.demo.service.model.Path;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
@@ -23,12 +22,12 @@ import java.util.Set;
 @Service
 public class PathServiceImpl implements PathService {
 	private final PathDepthFirstSearchCalculatorService pathDepthFirstSearchCalculatorService;
-	private final GraphCityInitializer graphCityInitializer;
+	private final CitiesAndRoutesToGraphConverter graphCityInitializer;
 	private final RouteService routeService;
 	private final CityService cityService;
 
 	public PathServiceImpl(PathDepthFirstSearchCalculatorService pathDepthFirstSearchCalculatorService,
-	                       GraphCityInitializer graphCityInitializer,
+	                       CitiesAndRoutesToGraphConverter graphCityInitializer,
 	                       @Qualifier("routeCacheService") RouteService routeService,
 	                       @Qualifier("cityCacheService") CityService cityService) {
 		this.pathDepthFirstSearchCalculatorService = pathDepthFirstSearchCalculatorService;
@@ -40,7 +39,7 @@ public class PathServiceImpl implements PathService {
 	@Override
 	public Set<Path> getPaths(City firstCity, City secondCity) throws PathNotFoundException, RouteNotFoundException,
 			CityNotFoundException {
-		Graph graphCity = graphCityInitializer.getGraphCity();
+		Graph graphCity = graphCityInitializer.convert(cityService.findAll(), routeService.findALl());
 		Set<LinkedList<String>> stringPaths = pathDepthFirstSearchCalculatorService.calculatePaths(graphCity,
 				firstCity.getName(),
 				secondCity.getName());

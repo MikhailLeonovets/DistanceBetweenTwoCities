@@ -2,9 +2,9 @@ package com.itechart.demo.service.impl.cache_service;
 
 import com.itechart.demo.repository.entity.City;
 import com.itechart.demo.service.CityService;
-import com.itechart.demo.service.cache.CityCache;
+import com.itechart.demo.cache.CityCache;
 import com.itechart.demo.service.exception.CityNotFoundException;
-import com.itechart.demo.service.initializer.CityCacheInitializer;
+import com.itechart.demo.cache.initializer.CityCacheInitializer;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

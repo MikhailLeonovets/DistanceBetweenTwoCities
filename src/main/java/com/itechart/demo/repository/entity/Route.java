@@ -1,6 +1,7 @@
 package com.itechart.demo.repository.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.itechart.demo.repository.entity.mapped_super_class.Identity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

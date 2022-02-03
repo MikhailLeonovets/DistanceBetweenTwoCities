@@ -1,4 +1,4 @@
-package com.itechart.demo.repository.entity;
+package com.itechart.demo.repository.entity.mapped_super_class;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -16,5 +16,4 @@ public class Identity implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
 }

@@ -1,8 +1,7 @@
-package com.itechart.demo.service.impl.repository_service;
+package com.itechart.demo.service.impl;
 
 import com.itechart.demo.service.model.Graph;
 import com.itechart.demo.service.PathDepthFirstSearchCalculatorService;
-import com.itechart.demo.service.exception.PathNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -15,7 +14,6 @@ public class PathDepthFirstSearchCalculatorServiceImpl implements PathDepthFirst
 	private Set<LinkedList<String>> paths;
 
 	public PathDepthFirstSearchCalculatorServiceImpl() {
-
 	}
 
 	@Override
