@@ -1,4 +1,4 @@
-package com.itechart.demo.service.impl;
+package com.itechart.demo.service.impl.repository_service;
 
 import com.itechart.demo.repository.entity.City;
 import com.itechart.demo.repository.entity.Route;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-@Service
+@Service("routeServiceImpl")
 public class RouteServiceImpl implements RouteService {
 	private final RouteRepository routeRepository;
 
@@ -19,8 +19,17 @@ public class RouteServiceImpl implements RouteService {
 	}
 
 	@Override
-	public List<Route> findRoutesByFirstCity(City firstCity) {
-		return routeRepository.findRoutesByFirstCity(firstCity);
+	public List<Route> findALl() {
+		return routeRepository.findAll();
+	}
+
+	@Override
+	public List<Route> findRoutesByFirstCity(City firstCity) throws RouteNotFoundException {
+		List<Route> routes = routeRepository.findRoutesByFirstCity(firstCity);
+		if (routes.isEmpty()){
+			throw new RouteNotFoundException();
+		}
+		return routes;
 	}
 
 	@Override

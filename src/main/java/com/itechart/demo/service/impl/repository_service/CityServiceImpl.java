@@ -1,4 +1,4 @@
-package com.itechart.demo.service.impl;
+package com.itechart.demo.service.impl.repository_service;
 
 import com.itechart.demo.repository.entity.City;
 import com.itechart.demo.repository.CityRepository;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-@Service
+@Service("cityServiceImpl")
 public class CityServiceImpl implements CityService {
 	private final CityRepository cityRepository;
 
@@ -32,7 +32,11 @@ public class CityServiceImpl implements CityService {
 	}
 
 	@Override
-	public City getById(Long id) {
-		return cityRepository.getById(id);
+	public City findById(Long id) throws CityNotFoundException {
+		Optional<City> optionalCity = cityRepository.findById(id);
+		if (optionalCity.isEmpty()) {
+			throw new CityNotFoundException();
+		}
+		return optionalCity.get();
 	}
 }

@@ -1,15 +1,13 @@
 package com.itechart.demo.service;
 
-import com.itechart.demo.repository.entity.City;
-import com.itechart.demo.service.exception.CityNotFoundException;
 import com.itechart.demo.service.exception.PathNotFoundException;
-import com.itechart.demo.service.exception.RouteNotFoundException;
-import com.itechart.demo.service.model.Path;
+import com.itechart.demo.service.model.Graph;
 
+import java.util.LinkedList;
 import java.util.Set;
 
 public interface PathDepthFirstSearchCalculatorService {
 
-	Set<Path> calculatePaths(City firstCity, City secondCity) throws PathNotFoundException, RouteNotFoundException, CityNotFoundException;
+	Set<LinkedList<String>> calculatePaths(Graph graph, String beginNode, String endNode) throws PathNotFoundException;
 
 }

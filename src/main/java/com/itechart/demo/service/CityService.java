@@ -11,6 +11,6 @@ public interface CityService {
 
 	City findByName(String name) throws CityNotFoundException;
 
-	City getById(Long id);
+	City findById(Long id) throws CityNotFoundException;
 
 }

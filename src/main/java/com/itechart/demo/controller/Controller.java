@@ -7,6 +7,7 @@ import com.itechart.demo.service.exception.CityNotFoundException;
 import com.itechart.demo.service.exception.PathNotFoundException;
 import com.itechart.demo.service.exception.RouteNotFoundException;
 import com.itechart.demo.service.model.Path;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +22,7 @@ public class Controller {
 	private final CityService cityService;
 	private final PathService pathService;
 
-	public Controller(CityService cityService, PathService pathService) {
+	public Controller(@Qualifier("cityCacheService") CityService cityService, PathService pathService) {
 		this.cityService = cityService;
 		this.pathService = pathService;
 	}
@@ -34,8 +35,8 @@ public class Controller {
 	@GetMapping("/path/{firstCityId}/{secondCityId}")
 	public Set<Path> getPaths(@PathVariable Long firstCityId, @PathVariable Long secondCityId)
 			throws PathNotFoundException, RouteNotFoundException, CityNotFoundException {
-		City firstCity = cityService.getById(firstCityId);
-		City secondCity = cityService.getById(secondCityId);
+		City firstCity = cityService.findById(firstCityId);
+		City secondCity = cityService.findById(secondCityId);
 		return pathService.getPaths(firstCity, secondCity);
 	}
 }
