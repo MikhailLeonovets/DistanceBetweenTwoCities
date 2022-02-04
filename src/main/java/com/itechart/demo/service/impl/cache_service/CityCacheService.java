@@ -22,6 +22,12 @@ public class CityCacheService implements CityService {
 	}
 
 	@Override
+	public City save(City city) {
+		cityCache.getCities().add(city);
+		return city;
+	}
+
+	@Override
 	public List<City> findAll() {
 		return cityCache.getCities();
 	}

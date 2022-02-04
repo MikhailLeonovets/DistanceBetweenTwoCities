@@ -18,6 +18,11 @@ public class CityDatabaseService implements CityService {
 	}
 
 	@Override
+	public City save(City city) {
+		return cityRepository.save(city);
+	}
+
+	@Override
 	public List<City> findAll() {
 		return cityRepository.findAll();
 	}

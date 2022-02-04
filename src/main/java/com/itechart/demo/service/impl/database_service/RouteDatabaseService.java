@@ -19,6 +19,11 @@ public class RouteDatabaseService implements RouteService {
 	}
 
 	@Override
+	public Route save(Route route) {
+		return routeRepository.save(route);
+	}
+
+	@Override
 	public List<Route> findAll() {
 		return routeRepository.findAll();
 	}

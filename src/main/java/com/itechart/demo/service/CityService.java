@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface CityService {
 
+	City save(City city);
+
 	List<City> findAll();
 
 	City findByName(String name) throws CityNotFoundException;

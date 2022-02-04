@@ -24,6 +24,12 @@ public class RouteCacheService implements RouteService {
 	}
 
 	@Override
+	public Route save(Route route) {
+		routeCache.getRoutes().add(route);
+		return route;
+	}
+
+	@Override
 	public List<Route> findAll() {
 		return routeCache.getRoutes();
 	}
