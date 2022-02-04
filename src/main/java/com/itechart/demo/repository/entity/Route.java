@@ -50,3 +50,15 @@ public class Route extends Identity {
 		return getClass().hashCode();
 	}
 }
+/*
+* {
+    "number": "bill123",
+    "itemAssoc": [
+        {
+            "upc": "u1",
+            "amount": 1,
+            "price": 2.5
+        }
+    ]
+}
+* */
