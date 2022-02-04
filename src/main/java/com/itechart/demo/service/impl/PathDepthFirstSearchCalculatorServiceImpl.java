@@ -10,23 +10,23 @@ import java.util.Set;
 
 @Service
 public class PathDepthFirstSearchCalculatorServiceImpl implements PathDepthFirstSearchCalculatorService {
-	private Graph graph;
-	private Set<LinkedList<String>> paths;
 
 	public PathDepthFirstSearchCalculatorServiceImpl() {
 	}
 
 	@Override
 	public Set<LinkedList<String>> calculatePaths(Graph graph, String beginNode, String endNode) {
-		this.graph = graph;
-		this.paths = new HashSet<>();
+		Set<LinkedList<String>> paths = new HashSet<>();
 		LinkedList<String> visited = new LinkedList<>();
 		visited.add(beginNode);
-		depthFirstSearch(visited, endNode);
+		depthFirstSearch(graph, visited, endNode, paths);
 		return paths;
 	}
 
-	private void depthFirstSearch(LinkedList<String> visited, String endNode) {
+	private void depthFirstSearch(Graph graph,
+	                              LinkedList<String> visited,
+	                              String endNode,
+	                              Set<LinkedList<String>> paths) {
 		HashSet<String> adjacentNodes = graph.getGraph().get(visited.getLast());
 		for (String node : adjacentNodes) {
 			if (visited.contains(node)) {
@@ -34,7 +34,7 @@ public class PathDepthFirstSearchCalculatorServiceImpl implements PathDepthFirst
 			}
 			if (node.equals(endNode)) {
 				visited.add(node);
-				savePath(visited);
+				savePath(visited, paths);
 				visited.removeLast();
 				break;
 			}
@@ -44,12 +44,12 @@ public class PathDepthFirstSearchCalculatorServiceImpl implements PathDepthFirst
 				continue;
 			}
 			visited.addLast(node);
-			depthFirstSearch(visited, endNode);
+			depthFirstSearch(graph, visited, endNode, paths);
 			visited.removeLast();
 		}
 	}
 
-	private void savePath(LinkedList<String> nodes) {
+	private void savePath(LinkedList<String> nodes, Set<LinkedList<String>> paths) {
 		LinkedList<String> path = new LinkedList<>(nodes);
 		paths.add(path);
 	}

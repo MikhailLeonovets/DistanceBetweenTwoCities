@@ -23,8 +23,11 @@ public class DatasourceBeanConfiguration {
 	private final CityRepository cityRepository;
 	private final RouteRepository routeRepository;
 
-	@Value("${cache.enable}")
-	private boolean cacheEnabled;
+	@Value("${city.cache.enable}")
+	private boolean cityCacheEnabled;
+
+	@Value("${route.cache.enable}")
+	private boolean routeCacheEnabled;
 
 	public DatasourceBeanConfiguration(CityRepository cityRepository, RouteRepository routeRepository) {
 		this.cityRepository = cityRepository;
@@ -34,7 +37,7 @@ public class DatasourceBeanConfiguration {
 
 	@Bean
 	public CityService cityService() {
-		if (cacheEnabled) {
+		if (cityCacheEnabled) {
 			CityCache cityCache = new CityCache();
 			CityCacheInitializer cityCacheInitializer = new CityCacheInitializer(cityCache, cityRepository);
 			return new CityCacheService(cityCache, cityCacheInitializer);
@@ -45,7 +48,7 @@ public class DatasourceBeanConfiguration {
 
 	@Bean
 	public RouteService routeService() {
-		if (cacheEnabled) {
+		if (routeCacheEnabled) {
 			RouteCache routeCache = new RouteCache();
 			RouteCacheInitializer routeCacheInitializer = new RouteCacheInitializer(routeCache, routeRepository);
 			return new RouteCacheService(routeCache, routeCacheInitializer);
