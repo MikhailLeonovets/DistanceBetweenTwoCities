@@ -8,6 +8,7 @@ import com.itechart.demo.service.exception.RouteNotFoundException;
 import com.itechart.demo.cache.initializer.RouteCacheInitializer;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -15,10 +16,11 @@ import java.util.stream.Collectors;
 @Service("routeCacheService")
 public class RouteCacheService implements RouteService {
 	private final RouteCache routeCache;
+	private final RouteCacheInitializer routeCacheInitializer;
 
 	public RouteCacheService(RouteCache routeCache, RouteCacheInitializer routeCacheInitializer) {
 		this.routeCache = routeCache;
-		routeCacheInitializer.initRouteCache();
+		this.routeCacheInitializer = routeCacheInitializer;
 	}
 
 	@Override
@@ -46,5 +48,10 @@ public class RouteCacheService implements RouteService {
 			throw new RouteNotFoundException();
 		}
 		return optionalRoute.get();
+	}
+
+	@PostConstruct
+	private void initRouteCache() {
+		routeCacheInitializer.initRouteCache();
 	}
 }
