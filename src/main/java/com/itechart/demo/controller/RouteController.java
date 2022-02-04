@@ -1,4 +1,4 @@
-package com.itechart.demo;
+package com.itechart.demo.controller;
 
 import com.itechart.demo.controller.payload.response.MessageResponse;
 import com.itechart.demo.repository.entity.Route;
@@ -49,7 +49,7 @@ public class RouteController {
 	public ResponseEntity<?> updateRoute(@PathVariable Long id,
 	                                     @RequestBody Route route) {
 		route.setId(id);
-		routeService.save(route);
+		routeService.save(route); //TODO - DOES NOT WORK
 		return ResponseEntity.ok(new MessageResponse(ROUTE_UPDATED_MSG));
 	}
 
