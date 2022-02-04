@@ -6,10 +6,10 @@ import com.itechart.demo.service.CityService;
 import com.itechart.demo.service.PathDepthFirstSearchCalculatorService;
 import com.itechart.demo.service.PathService;
 import com.itechart.demo.service.RouteService;
+import com.itechart.demo.service.converter.CitiesAndRoutesToGraphConverter;
 import com.itechart.demo.service.exception.CityNotFoundException;
 import com.itechart.demo.service.exception.PathNotFoundException;
 import com.itechart.demo.service.exception.RouteNotFoundException;
-import com.itechart.demo.service.converter.CitiesAndRoutesToGraphConverter;
 import com.itechart.demo.service.model.Graph;
 import com.itechart.demo.service.model.Path;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -22,7 +22,7 @@ import java.util.Set;
 @Service
 public class PathServiceImpl implements PathService {
 	private final PathDepthFirstSearchCalculatorService pathDepthFirstSearchCalculatorService;
-	private final CitiesAndRoutesToGraphConverter graphCityInitializer;
+	private final CitiesAndRoutesToGraphConverter citiesAndRoutesToGraphConverter;
 	private final RouteService routeService;
 	private final CityService cityService;
 
@@ -31,7 +31,7 @@ public class PathServiceImpl implements PathService {
 	                       @Qualifier("routeCacheService") RouteService routeService,
 	                       @Qualifier("cityCacheService") CityService cityService) {
 		this.pathDepthFirstSearchCalculatorService = pathDepthFirstSearchCalculatorService;
-		this.graphCityInitializer = graphCityInitializer;
+		this.citiesAndRoutesToGraphConverter = graphCityInitializer;
 		this.routeService = routeService;
 		this.cityService = cityService;
 	}
@@ -39,7 +39,7 @@ public class PathServiceImpl implements PathService {
 	@Override
 	public Set<Path> getPaths(City firstCity, City secondCity) throws PathNotFoundException, RouteNotFoundException,
 			CityNotFoundException {
-		Graph graphCity = graphCityInitializer.convert(cityService.findAll(), routeService.findALl());
+		Graph graphCity = citiesAndRoutesToGraphConverter.convert(cityService.findAll(), routeService.findALl());
 		Set<LinkedList<String>> stringPaths = pathDepthFirstSearchCalculatorService.calculatePaths(graphCity,
 				firstCity.getName(),
 				secondCity.getName());
