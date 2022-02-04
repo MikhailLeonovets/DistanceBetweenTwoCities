@@ -28,8 +28,8 @@ public class PathServiceImpl implements PathService {
 
 	public PathServiceImpl(PathDepthFirstSearchCalculatorService pathDepthFirstSearchCalculatorService,
 	                       CitiesAndRoutesToGraphConverter graphCityInitializer,
-	                       @Qualifier("routeCacheService") RouteService routeService,
-	                       @Qualifier("cityCacheService") CityService cityService) {
+	                       RouteService routeService,
+	                       CityService cityService) {
 		this.pathDepthFirstSearchCalculatorService = pathDepthFirstSearchCalculatorService;
 		this.citiesAndRoutesToGraphConverter = graphCityInitializer;
 		this.routeService = routeService;
@@ -45,7 +45,7 @@ public class PathServiceImpl implements PathService {
 				secondCity.getName());
 		Set<Path> paths = new HashSet<>();
 		for (LinkedList<String> stringPath : stringPaths) {
-			paths.add(getPathFromNodes(stringPath));
+			paths.add(convertNodesToPath(stringPath));
 		}
 		if (paths.isEmpty()) {
 			throw new PathNotFoundException();
@@ -53,7 +53,7 @@ public class PathServiceImpl implements PathService {
 		return paths;
 	}
 
-	private Path getPathFromNodes(LinkedList<String> nodes) throws RouteNotFoundException, CityNotFoundException {
+	private Path convertNodesToPath(LinkedList<String> nodes) throws RouteNotFoundException, CityNotFoundException {
 		Path path = new Path();
 		Float totalDistance = 0f;
 		Set<Route> routes = new HashSet<>();

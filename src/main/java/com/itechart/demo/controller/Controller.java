@@ -22,7 +22,7 @@ public class Controller {
 	private final CityService cityService;
 	private final PathService pathService;
 
-	public Controller(@Qualifier("cityCacheService") CityService cityService, PathService pathService) {
+	public Controller(CityService cityService, PathService pathService) {
 		this.cityService = cityService;
 		this.pathService = pathService;
 	}
