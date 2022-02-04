@@ -1,4 +1,4 @@
-package com.itechart.demo.service.impl.repository_service;
+package com.itechart.demo.service.impl.database_service;
 
 import com.itechart.demo.repository.entity.City;
 import com.itechart.demo.repository.entity.Route;
@@ -19,14 +19,23 @@ public class RouteDatabaseService implements RouteService {
 	}
 
 	@Override
-	public List<Route> findALl() {
+	public List<Route> findAll() {
 		return routeRepository.findAll();
+	}
+
+	@Override
+	public Route findById(Long id) throws RouteNotFoundException {
+		Optional<Route> optionalRoute = routeRepository.findById(id);
+		if (optionalRoute.isEmpty()) {
+			throw new RouteNotFoundException();
+		}
+		return optionalRoute.get();
 	}
 
 	@Override
 	public List<Route> findRoutesByFirstCity(City firstCity) throws RouteNotFoundException {
 		List<Route> routes = routeRepository.findRoutesByFirstCity(firstCity);
-		if (routes.isEmpty()){
+		if (routes.isEmpty()) {
 			throw new RouteNotFoundException();
 		}
 		return routes;
@@ -41,5 +50,15 @@ public class RouteDatabaseService implements RouteService {
 			throw new RouteNotFoundException();
 		}
 		return optionalRoute.get();
+	}
+
+	@Override
+	public void deleteById(Long id) {
+		routeRepository.deleteById(id);
+	}
+
+	@Override
+	public void delete(Route route) {
+		routeRepository.delete(route);
 	}
 }

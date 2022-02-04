@@ -48,6 +48,16 @@ public class CityCacheService implements CityService {
 		return optionalCity.get();
 	}
 
+	@Override
+	public void deleteById(Long id) throws CityNotFoundException {
+		cityCache.getCities().remove(findById(id));
+	}
+
+	@Override
+	public void delete(City city) {
+		cityCache.getCities().remove(city);
+	}
+
 	@PostConstruct
 	private void initCityCache() {
 		cityCacheInitializer.initCityCache();

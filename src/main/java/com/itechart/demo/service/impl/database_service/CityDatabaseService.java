@@ -1,4 +1,4 @@
-package com.itechart.demo.service.impl.repository_service;
+package com.itechart.demo.service.impl.database_service;
 
 import com.itechart.demo.repository.entity.City;
 import com.itechart.demo.repository.CityRepository;
@@ -38,5 +38,15 @@ public class CityDatabaseService implements CityService {
 			throw new CityNotFoundException();
 		}
 		return optionalCity.get();
+	}
+
+	@Override
+	public void deleteById(Long id) {
+		cityRepository.deleteById(id);
+	}
+
+	@Override
+	public void delete(City city) {
+		cityRepository.delete(city);
 	}
 }

@@ -38,7 +38,7 @@ public class PathServiceImpl implements PathService {
 	@Override
 	public Set<Path> getPaths(City firstCity, City secondCity) throws PathNotFoundException, RouteNotFoundException,
 			CityNotFoundException {
-		Graph graphCity = citiesAndRoutesToGraphConverter.convert(cityService.findAll(), routeService.findALl());
+		Graph graphCity = citiesAndRoutesToGraphConverter.convert(cityService.findAll(), routeService.findAll());
 		Set<LinkedList<String>> stringPaths = pathDepthFirstSearchCalculatorService.calculatePaths(graphCity,
 				firstCity.getName(),
 				secondCity.getName());

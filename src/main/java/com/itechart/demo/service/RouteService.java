@@ -8,10 +8,16 @@ import java.util.List;
 
 public interface RouteService {
 
-	List<Route> findALl();
+	List<Route> findAll();
+
+	Route findById(Long id) throws RouteNotFoundException;
 
 	List<Route> findRoutesByFirstCity(City firstCity) throws RouteNotFoundException;
 
 	Route findRouteBetweenCities(City firstCity, City secondCity) throws RouteNotFoundException;
+
+	void deleteById(Long id) throws RouteNotFoundException;
+
+	void delete(Route route);
 
 }

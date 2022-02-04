@@ -24,8 +24,19 @@ public class RouteCacheService implements RouteService {
 	}
 
 	@Override
-	public List<Route> findALl() {
+	public List<Route> findAll() {
 		return routeCache.getRoutes();
+	}
+
+	@Override
+	public Route findById(Long id) throws RouteNotFoundException {
+		Optional<Route> optionalRoute = routeCache.getRoutes().stream()
+				.filter(route -> route.getId().equals(id))
+				.findAny();
+		if (optionalRoute.isEmpty()) {
+			throw new RouteNotFoundException();
+		}
+		return optionalRoute.get();
 	}
 
 	@Override
@@ -48,6 +59,16 @@ public class RouteCacheService implements RouteService {
 			throw new RouteNotFoundException();
 		}
 		return optionalRoute.get();
+	}
+
+	@Override
+	public void deleteById(Long id) throws RouteNotFoundException {
+		routeCache.getRoutes().remove(findById(id));
+	}
+
+	@Override
+	public void delete(Route route) {
+		routeCache.getRoutes().remove(route);
 	}
 
 	@PostConstruct
