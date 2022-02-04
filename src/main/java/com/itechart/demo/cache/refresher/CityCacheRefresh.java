@@ -1,4 +1,4 @@
-package com.itechart.demo.cache.refresh;
+package com.itechart.demo.cache.refresher;
 
 import com.itechart.demo.cache.CityCache;
 import com.itechart.demo.repository.CityRepository;
