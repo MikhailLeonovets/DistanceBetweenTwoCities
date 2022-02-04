@@ -2,10 +2,13 @@ package com.itechart.demo.cache.refresh;
 
 import com.itechart.demo.cache.RouteCache;
 import com.itechart.demo.repository.RouteRepository;
+import com.itechart.demo.service.impl.cache_service.RouteCacheService;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 @Component
+@ConditionalOnBean(RouteCacheService.class)
 public class RouteCacheRefresh {
 	private final RouteCache routeCache;
 	private final RouteRepository routeRepository;

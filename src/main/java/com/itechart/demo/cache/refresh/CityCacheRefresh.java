@@ -2,10 +2,13 @@ package com.itechart.demo.cache.refresh;
 
 import com.itechart.demo.cache.CityCache;
 import com.itechart.demo.repository.CityRepository;
+import com.itechart.demo.service.impl.cache_service.CityCacheService;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 @Component
+@ConditionalOnBean(CityCacheService.class)
 public class CityCacheRefresh {
 	private final CityCache cityCache;
 	private final CityRepository cityRepository;
