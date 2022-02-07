@@ -7,9 +7,9 @@ import com.itechart.demo.service.exception.RouteNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -45,11 +45,11 @@ public class RouteController {
 		return routeService.findById(id);
 	}
 
-	@PatchMapping("/{id}")
+	@PutMapping("/{id}")
 	public ResponseEntity<?> updateRoute(@PathVariable Long id,
 	                                     @RequestBody Route route) {
 		route.setId(id);
-		routeService.save(route); //TODO - DOES NOT WORK
+		routeService.save(route);
 		return ResponseEntity.ok(new MessageResponse(ROUTE_UPDATED_MSG));
 	}
 
