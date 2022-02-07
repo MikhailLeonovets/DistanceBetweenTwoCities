@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Column;
+import javax.persistence.Version;
 import java.util.Objects;
 
 @NoArgsConstructor
@@ -37,6 +38,9 @@ public class Route extends Identity {
 	@Column(name = "distance")
 	private Float distance;
 
+	@Version
+	private Long version;
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -50,15 +54,3 @@ public class Route extends Identity {
 		return getClass().hashCode();
 	}
 }
-/*
-* {
-    "number": "bill123",
-    "itemAssoc": [
-        {
-            "upc": "u1",
-            "amount": 1,
-            "price": 2.5
-        }
-    ]
-}
-* */

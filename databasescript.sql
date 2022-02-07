@@ -1,22 +1,20 @@
-create database distance_between_cities;
-
-create table distance_between_cities.city
+create table city
 (
-    id   bigint auto_increment,
-    name varchar(255) not null,
+    id      bigint auto_increment
+        primary key,
+    name    varchar(255) not null,
+    version bigint       not null,
     constraint city_id_uindex
         unique (id)
 );
 
-alter table distance_between_cities.city
-    add primary key (id);
-
-create table distance_between_cities.route
+create table route
 (
     id             bigint auto_increment,
     first_city_id  bigint not null,
     second_city_id bigint not null,
     distance       float  not null,
+    version        bigint not null,
     primary key (first_city_id, second_city_id),
     constraint city_city_id_uindex
         unique (id),

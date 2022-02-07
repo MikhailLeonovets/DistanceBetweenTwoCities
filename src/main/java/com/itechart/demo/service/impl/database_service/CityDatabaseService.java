@@ -5,7 +5,9 @@ import com.itechart.demo.repository.CityRepository;
 import com.itechart.demo.service.CityService;
 import com.itechart.demo.service.exception.CityNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +20,7 @@ public class CityDatabaseService implements CityService {
 	}
 
 	@Override
+	@Transactional
 	public City save(City city) {
 		return cityRepository.save(city);
 	}

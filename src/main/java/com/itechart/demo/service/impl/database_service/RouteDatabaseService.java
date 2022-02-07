@@ -7,6 +7,7 @@ import com.itechart.demo.service.RouteService;
 import com.itechart.demo.service.exception.RouteNotFoundException;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,6 +20,7 @@ public class RouteDatabaseService implements RouteService {
 	}
 
 	@Override
+	@Transactional
 	public Route save(Route route) {
 		return routeRepository.save(route);
 	}
