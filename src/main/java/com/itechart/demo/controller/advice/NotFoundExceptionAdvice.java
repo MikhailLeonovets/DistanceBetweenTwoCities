@@ -14,24 +14,24 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @PropertySource("classpath:messages/ru/exception/not_found.properties")
 public class NotFoundExceptionAdvice {
 	@Value("${path.exception}")
-	private String PATH_NOT_FOUND_MSG;
+	private String pathNotFoundMsg;
 	@Value("${city.exception}")
-	private String CITY_NOT_FOUND_MSG;
+	private String cityNotFoundMsg;
 	@Value("${route.exception}")
-	private String ROUTE_NOT_FOUND_MSG;
+	private String routeNotFoundMsg;
 
 	@ExceptionHandler(PathNotFoundException.class)
 	public ResponseEntity<?> handlePathNotFoundException(PathNotFoundException e) {
-		return ResponseEntity.badRequest().body(new MessageResponse(PATH_NOT_FOUND_MSG));
+		return ResponseEntity.badRequest().body(new MessageResponse(pathNotFoundMsg));
 	}
 
 	@ExceptionHandler(CityNotFoundException.class)
 	public ResponseEntity<?> handleCityNotFoundException(CityNotFoundException e) {
-		return ResponseEntity.badRequest().body(new MessageResponse(CITY_NOT_FOUND_MSG));
+		return ResponseEntity.badRequest().body(new MessageResponse(cityNotFoundMsg));
 	}
 
 	@ExceptionHandler(RouteNotFoundException.class)
 	public ResponseEntity<?> handleRouteNotFoundException(RouteNotFoundException e) {
-		return ResponseEntity.badRequest().body(new MessageResponse(ROUTE_NOT_FOUND_MSG));
+		return ResponseEntity.badRequest().body(new MessageResponse(routeNotFoundMsg));
 	}
 }
