@@ -1,19 +1,17 @@
-package com.itechart.demo.service.impl.database_service.hibernate;
+package com.itechart.demo.service.impl.database_service.jdbc_template;
 
 import com.itechart.demo.repository.entity.City;
-import com.itechart.demo.repository.hibernate.CityHibernateRepository;
+import com.itechart.demo.repository.entity.jdbc_template.impl.CityJdbcTemplateRepository;
 import com.itechart.demo.service.CityService;
 import com.itechart.demo.service.exception.CityNotFoundException;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
-public class CityHibernateService implements CityService { //TODO
-	private final CityHibernateRepository repository;
+public class CityJdbcService implements CityService {//TODO
+	private final CityJdbcTemplateRepository cityJdbcTemplateRepository;
 
-	public CityHibernateService(CityHibernateRepository cityHibernateRepository) {
-		this.repository = cityHibernateRepository;
+	public CityJdbcService(CityJdbcTemplateRepository cityJdbcTemplateRepository) {
+		this.cityJdbcTemplateRepository = cityJdbcTemplateRepository;
 	}
 
 	@Override

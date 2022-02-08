@@ -1,6 +1,6 @@
 package com.itechart.demo.repository.hibernate;
 
-import com.itechart.demo.repository.config.HibernateUtil;
+import com.itechart.demo.repository.hibernate.config.HibernateUtil;
 import com.itechart.demo.repository.entity.Route;
 import org.hibernate.Session;
 import org.springframework.context.annotation.Scope;
