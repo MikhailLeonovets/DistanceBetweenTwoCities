@@ -16,6 +16,8 @@ public interface RouteService {
 
 	List<Route> findRoutesByFirstCity(City firstCity) throws RouteNotFoundException;
 
+	Route update(Route route);
+
 	Route findRouteBetweenCities(City firstCity, City secondCity) throws RouteNotFoundException;
 
 	void deleteById(Long id) throws RouteNotFoundException;

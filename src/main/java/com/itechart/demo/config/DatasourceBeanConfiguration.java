@@ -10,8 +10,8 @@ import com.itechart.demo.service.CityService;
 import com.itechart.demo.service.RouteService;
 import com.itechart.demo.service.impl.cache_service.CityCacheService;
 import com.itechart.demo.service.impl.cache_service.RouteCacheService;
-import com.itechart.demo.service.impl.database_service.CityDatabaseService;
-import com.itechart.demo.service.impl.database_service.RouteDatabaseService;
+import com.itechart.demo.service.impl.database_service.spring_data.CitySpringDataService;
+import com.itechart.demo.service.impl.database_service.spring_data.RouteSpringDataService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -42,7 +42,7 @@ public class DatasourceBeanConfiguration {
 			CityCacheInitializer cityCacheInitializer = new CityCacheInitializer(cityCache, cityRepository);
 			return new CityCacheService(cityCache, cityCacheInitializer);
 		} else {
-			return new CityDatabaseService(cityRepository);
+			return new CitySpringDataService(cityRepository);
 		}
 	}
 
@@ -53,7 +53,7 @@ public class DatasourceBeanConfiguration {
 			RouteCacheInitializer routeCacheInitializer = new RouteCacheInitializer(routeCache, routeRepository);
 			return new RouteCacheService(routeCache, routeCacheInitializer);
 		} else {
-			return new RouteDatabaseService(routeRepository);
+			return new RouteSpringDataService(routeRepository);
 		}
 	}
 }

@@ -1,38 +1,32 @@
-package com.itechart.demo.service.impl.database_service;
+package com.itechart.demo.service.impl.database_service.spring_data;
 
 import com.itechart.demo.repository.entity.City;
 import com.itechart.demo.repository.CityRepository;
-import com.itechart.demo.repository.hibernate.CityHibernateRepository;
 import com.itechart.demo.service.CityService;
 import com.itechart.demo.service.exception.CityNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
 
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
 @Service("cityServiceImpl")
-public class CityDatabaseService implements CityService {
+public class CitySpringDataService implements CityService {
 	private final CityRepository cityRepository;
-	private final CityHibernateRepository cityHibernateRepository = new CityHibernateRepository();
 
-	public CityDatabaseService(CityRepository cityRepository) {
+	public CitySpringDataService(CityRepository cityRepository) {
 		this.cityRepository = cityRepository;
 	}
 
 	@Override
 	@Transactional
 	public City save(City city) {
-		//return cityRepository.save(city);
-		cityHibernateRepository.save(city);
-		return null; //TODO
+		return cityRepository.save(city);
 	}
 
 	@Override
 	public List<City> findAll() {
-		//return cityRepository.findAll();
-		return cityHibernateRepository.getAll(); //TODO
+		return cityRepository.findAll();
 	}
 
 	@Override
@@ -51,6 +45,11 @@ public class CityDatabaseService implements CityService {
 			throw new CityNotFoundException();
 		}
 		return optionalCity.get();
+	}
+
+	@Override
+	public City update(City city) {
+		return save(city);
 	}
 
 	@Override

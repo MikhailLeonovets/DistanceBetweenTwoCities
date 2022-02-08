@@ -57,6 +57,11 @@ public class RouteCacheService implements RouteService {
 	}
 
 	@Override
+	public Route update(Route route) {
+		return null; //TODO
+	}
+
+	@Override
 	public Route findRouteBetweenCities(City firstCity, City secondCity) throws RouteNotFoundException {
 		Optional<Route> optionalRoute = routeCache.getRoutes().stream()
 				.filter(route1 -> route1.getFirstCity().equals(firstCity)

@@ -55,6 +55,11 @@ public class CityCacheService implements CityService {
 	}
 
 	@Override
+	public City update(City city) {
+		return null; //TODO
+	}
+
+	@Override
 	public void deleteById(Long id) throws CityNotFoundException {
 		cityCache.getCities().remove(findById(id));
 	}

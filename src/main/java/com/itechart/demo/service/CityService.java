@@ -15,6 +15,8 @@ public interface CityService {
 
 	City findById(Long id) throws CityNotFoundException;
 
+	City update(City city);
+
 	void deleteById(Long id) throws CityNotFoundException;
 
 	void delete(City city);
