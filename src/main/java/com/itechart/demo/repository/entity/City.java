@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.Hibernate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -29,13 +28,13 @@ public class City extends Identity {
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
-		if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+		if (o == null || getClass() != o.getClass()) return false;
 		City city = (City) o;
-		return getId() != null && Objects.equals(getId(), city.getId());
+		return name.equals(city.name);
 	}
 
 	@Override
 	public int hashCode() {
-		return getClass().hashCode();
+		return Objects.hash(name, version);
 	}
 }

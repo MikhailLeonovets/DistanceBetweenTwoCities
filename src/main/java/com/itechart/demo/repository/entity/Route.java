@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.Hibernate;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -44,13 +43,15 @@ public class Route extends Identity {
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
-		if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+		if (o == null || getClass() != o.getClass()) return false;
 		Route route = (Route) o;
-		return getId() != null && Objects.equals(getId(), route.getId());
+		return firstCity.equals(route.firstCity)
+				&& secondCity.equals(route.secondCity)
+				&& distance.equals(route.distance);
 	}
 
 	@Override
 	public int hashCode() {
-		return getClass().hashCode();
+		return Objects.hash(firstCity, secondCity, distance);
 	}
 }
