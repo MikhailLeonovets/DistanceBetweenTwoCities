@@ -4,6 +4,8 @@ import com.itechart.demo.controller.payload.response.MessageResponse;
 import com.itechart.demo.repository.entity.City;
 import com.itechart.demo.service.CityService;
 import com.itechart.demo.service.exception.CityNotFoundException;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,14 +18,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-import static com.itechart.demo.controller.constant.success_msg.CreatedMessageResponse.CITY_CREATED_MSG;
-import static com.itechart.demo.controller.constant.success_msg.DeletedMessageResponse.CITY_DELETED_MSG;
-import static com.itechart.demo.controller.constant.success_msg.UpdatedMessageResponse.CITY_UPDATED_MSG;
-
 @RestController
+@PropertySource("classpath:messages/ru/crud/success.properties")
 @RequestMapping("/path-calculator/city")
 public class CityController {
 	private final CityService cityService;
+
+	@Value("${city.created}")
+	private String cityCreated;
+	@Value("${city.updated}")
+	private String cityUpdated;
+	@Value("${city.deleted}")
+	private String cityDeleted;
 
 	public CityController(CityService cityService) {
 		this.cityService = cityService;
@@ -32,7 +38,7 @@ public class CityController {
 	@PostMapping()
 	public ResponseEntity<?> createCity(@RequestBody City city) {
 		cityService.save(city);
-		return ResponseEntity.ok(new MessageResponse(CITY_CREATED_MSG));
+		return ResponseEntity.ok(new MessageResponse(cityCreated));
 	}
 
 	@GetMapping
@@ -49,14 +55,12 @@ public class CityController {
 	public ResponseEntity<?> updateCity(@PathVariable Long id, @RequestBody City city) {
 		city.setId(id);
 		cityService.save(city);
-		return ResponseEntity.ok(new MessageResponse(CITY_UPDATED_MSG));
+		return ResponseEntity.ok(new MessageResponse(cityUpdated));
 	}
 
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> deleteCity(@PathVariable Long id) throws CityNotFoundException {
 		cityService.deleteById(id);
-		return ResponseEntity.ok(new MessageResponse(CITY_DELETED_MSG));
+		return ResponseEntity.ok(new MessageResponse(cityDeleted));
 	}
-
-
 }
