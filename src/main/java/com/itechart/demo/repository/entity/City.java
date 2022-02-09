@@ -10,6 +10,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Version;
+import java.io.Serializable;
 import java.util.Objects;
 
 @Getter
@@ -18,7 +19,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "city")
 @NoArgsConstructor
-public class City extends Identity {
+public class City extends Identity implements Serializable {
 	@Column(name = "name", nullable = false)
 	private String name;
 

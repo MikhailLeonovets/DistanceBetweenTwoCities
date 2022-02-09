@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Column;
 import javax.persistence.Version;
+import java.io.Serializable;
 import java.util.Objects;
 
 @NoArgsConstructor
@@ -23,7 +24,7 @@ import java.util.Objects;
 @ToString
 @Entity
 @Table(name = "route")
-public class Route extends Identity {
+public class Route extends Identity implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "first_city_id")
 	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})

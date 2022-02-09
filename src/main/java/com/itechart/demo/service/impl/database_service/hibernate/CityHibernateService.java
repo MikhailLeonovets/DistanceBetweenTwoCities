@@ -24,7 +24,7 @@ public class CityHibernateService implements CityService { //TODO
 
 	@Override
 	public List<City> findAll() {
-		return repository.getAll();
+		return repository.findAll();
 	}
 
 	@Override
@@ -33,7 +33,7 @@ public class CityHibernateService implements CityService { //TODO
 		if (optionalCity.isEmpty()) {
 			throw new CityNotFoundException();
 		}
-		return optionalCity.get(); //TODO
+		return optionalCity.get();
 	}
 
 	@Override
@@ -42,17 +42,17 @@ public class CityHibernateService implements CityService { //TODO
 		if (optionalCity.isEmpty()) {
 			throw new CityNotFoundException();
 		}
-		return optionalCity.get(); //TODO
+		return optionalCity.get();
 	}
 
 	@Override
 	public City update(City city) {
-		return repository.update(city); //todo
+		return repository.update(city);
 	}
 
 	@Override
 	public void deleteById(Long id) throws CityNotFoundException {
-		repository.deleteById(id); //todo
+		repository.deleteById(id);
 	}
 
 	@Override
