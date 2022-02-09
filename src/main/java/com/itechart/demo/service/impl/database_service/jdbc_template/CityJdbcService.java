@@ -6,40 +6,49 @@ import com.itechart.demo.service.CityService;
 import com.itechart.demo.service.exception.CityNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CityJdbcService implements CityService {//TODO
 	private final CityJdbcTemplateRepository repository;
 
 	public CityJdbcService(CityJdbcTemplateRepository cityJdbcTemplateRepository) {
-		this.cityJdbcTemplateRepository = cityJdbcTemplateRepository;
+		this.repository = cityJdbcTemplateRepository;
 	}
 
 	@Override
-	public City save(City city) {
+	public City save(City city) throws SQLException {
 		return repository.save(city);
-		//todo
 	}
 
 	@Override
 	public List<City> findAll() {
-		return repository.getAll();
+		return repository.findAll();
 	}
 
 	@Override
 	public City findByName(String name) throws CityNotFoundException {
-		return repository.findByName(name); //todo
+		Optional<City> optionalCity = repository.findByName(name);
+		if (optionalCity.isEmpty()) {
+			throw new CityNotFoundException();
+		}
+		return optionalCity.get();
 	}
 
 	@Override
 	public City findById(Long id) throws CityNotFoundException {
-		return repository.getById(id);
+		Optional<City> optionalCity = repository.findById(id);
+		if (optionalCity.isEmpty()) {
+			throw new CityNotFoundException();
+		}
+		return optionalCity.get();
 	}
 
 	@Override
 	public City update(City city) {
-		return repository.update(city); //todo
+		return repository.update(city);
 	}
 
 	@Override
@@ -49,6 +58,6 @@ public class CityJdbcService implements CityService {//TODO
 
 	@Override
 	public void delete(City city) {
-		repository.delete(city); //todo
+		repository.delete(city);
 	}
 }

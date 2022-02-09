@@ -8,6 +8,7 @@ import com.itechart.demo.service.exception.RouteNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RouteHibernateService implements RouteService { //TODO
@@ -20,32 +21,43 @@ public class RouteHibernateService implements RouteService { //TODO
 	@Override
 	public Route save(Route route) {
 		return repository.save(route);
-		//todo
 	}
 
 	@Override
 	public List<Route> findAll() {
-		return repository.getAll();
+		return repository.findAll();
 	}
 
 	@Override
 	public Route findById(Long id) throws RouteNotFoundException {
-		return repository.getById(id);
+		Optional<Route> optionalRoute = repository.findById(id);
+		if (optionalRoute.isEmpty()) {
+			throw new RouteNotFoundException();
+		}
+		return optionalRoute.get();
 	}
 
 	@Override
 	public List<Route> findRoutesByFirstCity(City firstCity) throws RouteNotFoundException {
-		return repository.findRoutesByFirstCity(firstCity); //todo
+		List<Route> routes = repository.findByFirstCity(firstCity);
+		if (routes.isEmpty()) {
+			throw new RouteNotFoundException();
+		}
+		return routes;
 	}
 
 	@Override
 	public Route update(Route route) {
-		return repository.update(route); //todo
+		return repository.update(route);
 	}
 
 	@Override
 	public Route findRouteBetweenCities(City firstCity, City secondCity) throws RouteNotFoundException {
-		return repository.findRouteBetweenCities(firstCity, secondCity);
+		Optional<Route> optionalRoute = repository.findRouteBetweenCities(firstCity, secondCity);
+		if (optionalRoute.isEmpty()) {
+			throw new RouteNotFoundException();
+		}
+		return optionalRoute.get();
 	}
 
 	@Override
