@@ -9,6 +9,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -25,12 +26,12 @@ import java.util.Objects;
 @Entity
 @Table(name = "route")
 public class Route extends Identity implements Serializable {
-	@ManyToOne
+	@ManyToOne(targetEntity = City.class, fetch = FetchType.EAGER)
 	@JoinColumn(name = "first_city_id")
 	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	private City firstCity;
 
-	@ManyToOne
+	@ManyToOne(targetEntity = City.class, fetch = FetchType.EAGER)
 	@JoinColumn(name = "second_city_id")
 	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	private City secondCity;
