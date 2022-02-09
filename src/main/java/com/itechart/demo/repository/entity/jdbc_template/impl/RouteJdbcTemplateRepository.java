@@ -1,15 +1,19 @@
 package com.itechart.demo.repository.entity.jdbc_template.impl;
 
-import com.itechart.demo.repository.entity.City;
 import com.itechart.demo.repository.entity.Route;
 import com.itechart.demo.repository.entity.jdbc_template.DataSourceProvider;
 import com.itechart.demo.repository.entity.jdbc_template.RouteDao;
-import com.itechart.demo.repository.entity.jdbc_template.mapper.CityMapper;
 import com.itechart.demo.repository.entity.jdbc_template.mapper.RouteMapper;
+import org.springframework.context.annotation.Scope;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.annotation.ApplicationScope;
 
 import java.util.List;
 
+@Component
+@Scope("singleton")
+@ApplicationScope
 public class RouteJdbcTemplateRepository implements RouteDao {
 	private JdbcTemplate jdbcTemplate;
 

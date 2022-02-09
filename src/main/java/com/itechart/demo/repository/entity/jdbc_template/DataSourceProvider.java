@@ -1,11 +1,15 @@
 package com.itechart.demo.repository.entity.jdbc_template;
 
+import org.springframework.context.annotation.Scope;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.annotation.ApplicationScope;
 
 import javax.sql.DataSource;
 
 @Component
+@Scope("singleton")
+@ApplicationScope
 public class DataSourceProvider {
 	private DataSource dataSource;
 

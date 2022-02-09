@@ -1,4 +1,4 @@
-package com.itechart.demo.repository;
+package com.itechart.demo.repository.spring_data;
 
 import com.itechart.demo.repository.entity.City;
 import org.springframework.data.jpa.repository.JpaRepository;

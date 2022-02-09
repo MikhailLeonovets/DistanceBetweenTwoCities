@@ -17,41 +17,41 @@ public class RouteJdbcService implements RouteService {//TODO
 
 	@Override
 	public Route save(Route route) {
-		return null;
+		return repository.save(route);
 	}
 
 	@Override
 	public List<Route> findAll() {
-		return null;
+		return repository.getAll();
 	}
 
 	@Override
 	public Route findById(Long id) throws RouteNotFoundException {
-		return null;
+		return repository.getById(id);
 	}
 
 	@Override
 	public List<Route> findRoutesByFirstCity(City firstCity) throws RouteNotFoundException {
-		return null;
+		return repository.findRoutesByFirstCity(firstCity); //todo
 	}
 
 	@Override
 	public Route update(Route route) {
-		return null;
+		return repository.update(route); //todo
 	}
 
 	@Override
 	public Route findRouteBetweenCities(City firstCity, City secondCity) throws RouteNotFoundException {
-		return null;
+		return repository.findRouteBetweenCities(firstCity, secondCity); //todo
 	}
 
 	@Override
 	public void deleteById(Long id) throws RouteNotFoundException {
-
+		repository.deleteById(id);
 	}
 
 	@Override
 	public void delete(Route route) {
-
+		repository.delete(route); //todo
 	}
 }

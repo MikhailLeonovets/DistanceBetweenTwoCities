@@ -1,7 +1,7 @@
 package com.itechart.demo.service.impl.database_service.spring_data;
 
 import com.itechart.demo.repository.entity.City;
-import com.itechart.demo.repository.CityRepository;
+import com.itechart.demo.repository.spring_data.CityRepository;
 import com.itechart.demo.service.CityService;
 import com.itechart.demo.service.exception.CityNotFoundException;
 import org.springframework.stereotype.Service;

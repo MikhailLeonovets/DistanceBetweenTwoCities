@@ -7,6 +7,7 @@ import com.itechart.demo.service.exception.CityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CityHibernateService implements CityService { //TODO
@@ -18,36 +19,44 @@ public class CityHibernateService implements CityService { //TODO
 
 	@Override
 	public City save(City city) {
-		return null;
+		return repository.save(city);
 	}
 
 	@Override
 	public List<City> findAll() {
-		return null;
+		return repository.getAll();
 	}
 
 	@Override
 	public City findByName(String name) throws CityNotFoundException {
-		return null;
+		Optional<City> optionalCity = repository.findByName(name);
+		if (optionalCity.isEmpty()) {
+			throw new CityNotFoundException();
+		}
+		return optionalCity.get(); //TODO
 	}
 
 	@Override
 	public City findById(Long id) throws CityNotFoundException {
-		return null;
+		Optional<City> optionalCity = repository.findById(id);
+		if (optionalCity.isEmpty()) {
+			throw new CityNotFoundException();
+		}
+		return optionalCity.get(); //TODO
 	}
 
 	@Override
 	public City update(City city) {
-		return null;
+		return repository.update(city); //todo
 	}
 
 	@Override
 	public void deleteById(Long id) throws CityNotFoundException {
-
+		repository.deleteById(id); //todo
 	}
 
 	@Override
 	public void delete(City city) {
-
+		repository.delete(city);
 	}
 }

@@ -2,7 +2,7 @@ package com.itechart.demo.service.impl.database_service.spring_data;
 
 import com.itechart.demo.repository.entity.City;
 import com.itechart.demo.repository.entity.Route;
-import com.itechart.demo.repository.RouteRepository;
+import com.itechart.demo.repository.spring_data.RouteRepository;
 import com.itechart.demo.service.RouteService;
 import com.itechart.demo.service.exception.RouteNotFoundException;
 import org.springframework.stereotype.Service;

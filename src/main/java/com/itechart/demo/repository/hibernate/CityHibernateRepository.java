@@ -5,6 +5,7 @@ import com.itechart.demo.repository.entity.City;
 import org.hibernate.Session;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.annotation.ApplicationScope;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @Component
 @Scope("singleton")
+@ApplicationScope
 public class CityHibernateRepository {
 
 	public void save(City city) {
