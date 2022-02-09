@@ -1,7 +1,7 @@
 package com.itechart.demo.service.impl.database_service.jdbc_template;
 
 import com.itechart.demo.repository.entity.City;
-import com.itechart.demo.repository.entity.jdbc_template.impl.CityJdbcTemplateRepository;
+import com.itechart.demo.repository.jdbc_template.impl.CityJdbcTemplateRepository;
 import com.itechart.demo.service.CityService;
 import com.itechart.demo.service.exception.CityNotFoundException;
 import org.springframework.stereotype.Service;

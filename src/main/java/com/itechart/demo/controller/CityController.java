@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.sql.SQLException;
 import java.util.List;
 
 @RestController
@@ -36,7 +37,7 @@ public class CityController {
 	}
 
 	@PostMapping()
-	public ResponseEntity<?> createCity(@RequestBody City city) {
+	public ResponseEntity<?> createCity(@RequestBody City city) throws SQLException {
 		cityService.save(city);
 		return ResponseEntity.ok(new MessageResponse(cityCreated));
 	}

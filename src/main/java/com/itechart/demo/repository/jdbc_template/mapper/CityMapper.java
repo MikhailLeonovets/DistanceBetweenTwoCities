@@ -1,4 +1,4 @@
-package com.itechart.demo.repository.entity.jdbc_template.mapper;
+package com.itechart.demo.repository.jdbc_template.mapper;
 
 import com.itechart.demo.repository.entity.City;
 import org.springframework.jdbc.core.RowMapper;

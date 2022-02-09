@@ -1,9 +1,9 @@
-package com.itechart.demo.repository.entity.jdbc_template.impl;
+package com.itechart.demo.repository.jdbc_template.impl;
 
 import com.itechart.demo.repository.entity.City;
-import com.itechart.demo.repository.entity.jdbc_template.CityDao;
-import com.itechart.demo.repository.entity.jdbc_template.DataSourceProvider;
-import com.itechart.demo.repository.entity.jdbc_template.mapper.CityMapper;
+import com.itechart.demo.repository.jdbc_template.CityDao;
+import com.itechart.demo.repository.jdbc_template.DataSourceProvider;
+import com.itechart.demo.repository.jdbc_template.mapper.CityMapper;
 import org.springframework.context.annotation.Scope;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
@@ -33,7 +33,7 @@ public class CityJdbcTemplateRepository implements CityDao {
 		Map<String, Object> parameters = new HashMap<>();
 		parameters.put("name", city.getName());
 		parameters.put("version", city.getVersion());
-		city.setId((Long) simpleJdbcInsert.executeAndReturnKey(parameters));
+		city.setId(Long.parseLong(simpleJdbcInsert.executeAndReturnKey(parameters).toString()));
 		return city;
 	}
 
@@ -44,28 +44,36 @@ public class CityJdbcTemplateRepository implements CityDao {
 
 	@Override
 	public Optional<City> findByName(String name) {
-		return Optional.of(jdbcTemplate.queryForObject("SELECT * FROM city WHERE name=?", new CityMapper(), name));
+		List<City> cities = jdbcTemplate.query("SELECT * FROM city WHERE name=?", new CityMapper(), name);
+		if (cities.isEmpty()) {
+			return Optional.empty();
+		}
+		return Optional.of(cities.get(0));
 	}
 
 	@Override
 	public Optional<City> findById(Long id) {
-		return Optional.of(jdbcTemplate.queryForObject("SELECT * FROM city WHERE id=?", new CityMapper(), id));
+		List<City> cities = jdbcTemplate.query("SELECT * FROM city WHERE id=?", new CityMapper(), id);
+		if (cities.isEmpty()) {
+			return Optional.empty();
+		}
+		return Optional.of(cities.get(0));
 	}
 
 	@Override
 	public City update(City city) {
-		jdbcTemplate.update("UPDATE city SET name=? version=? WHERE id=?",
-				city.getName(), city.getVersion(), city.getId());
+		jdbcTemplate.update("UPDATE city SET name=?, version=? WHERE id=?",
+				city.getName(), city.getVersion() + 1, city.getId());
 		return city;
 	}
 
 	@Override
 	public void deleteById(Long id) {
-		jdbcTemplate.update("DELETE * FROM city WHERE id=?", id);
+		jdbcTemplate.update("DELETE FROM city WHERE id=?", id);
 	}
 
 	@Override
 	public void delete(City city) {
-		jdbcTemplate.update("DELETE * FROM city WHERE id=?", city.getId());
+		jdbcTemplate.update("DELETE FROM city WHERE id=?", city.getId());
 	}
 }

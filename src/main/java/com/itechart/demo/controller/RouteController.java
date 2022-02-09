@@ -54,8 +54,7 @@ public class RouteController {
 	@PutMapping("/{id}")
 	public ResponseEntity<?> updateRoute(@PathVariable Long id,
 	                                     @RequestBody Route route) {
-		route.setId(id);
-		routeService.save(route);
+		routeService.update(route);
 		return ResponseEntity.ok(new MessageResponse(routeUpdated));
 	}
 

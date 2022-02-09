@@ -2,14 +2,14 @@ package com.itechart.demo.service.impl.database_service.jdbc_template;
 
 import com.itechart.demo.repository.entity.City;
 import com.itechart.demo.repository.entity.Route;
-import com.itechart.demo.repository.entity.jdbc_template.impl.RouteJdbcTemplateRepository;
+import com.itechart.demo.repository.jdbc_template.impl.RouteJdbcTemplateRepository;
 import com.itechart.demo.service.RouteService;
 import com.itechart.demo.service.exception.RouteNotFoundException;
 
 import java.util.List;
 import java.util.Optional;
 
-public class RouteJdbcService implements RouteService {//TODO
+public class RouteJdbcService implements RouteService {
 	private final RouteJdbcTemplateRepository repository;
 
 	public RouteJdbcService(RouteJdbcTemplateRepository repository) {

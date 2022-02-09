@@ -12,6 +12,7 @@ import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -23,10 +24,10 @@ public class RouteHibernateRepository {
 	public Route save(Route route) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		session.beginTransaction();
-		session.save(route);
+		route.setId((Long) session.save(route));
 		session.flush();
 		session.close();
-		return session.find(Route.class, route);
+		return route;
 	}
 
 	public List<Route> findAll() {
@@ -40,23 +41,17 @@ public class RouteHibernateRepository {
 
 	public List<Route> findByFirstCity(City firstCity) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
-		CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-		CriteriaQuery<Route> criteriaQuery = criteriaBuilder.createQuery(Route.class);
-		Root<Route> root = criteriaQuery.from(Route.class);
-		criteriaQuery.select(root).where(root.get("first_city_id").in(firstCity.getId()));
-		Query result = session.createQuery(criteriaQuery);
-		return new ArrayList<>(result.getResultList());
+		Query query = session.createQuery("FROM Route WHERE firstCity=:firstCity");
+		query.setParameter("firstCity", firstCity);
+		return query.getResultList();
 	}
 
 	public Optional<Route> findRouteBetweenCities(City firstCity, City secondCity) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
-		CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-		CriteriaQuery<Route> criteriaQuery = criteriaBuilder.createQuery(Route.class);
-		Root<Route> root = criteriaQuery.from(Route.class);
-		criteriaQuery.select(root).where(root.get("first_city_id").in(firstCity.getId()))
-				.where(root.get("second_city_id").in(secondCity.getId()));
-		Query result = session.createQuery(criteriaQuery);
-		return Optional.of((Route) result.getResultList().stream().findFirst().get());
+		Query query = session.createQuery("FROM Route WHERE firstCity=:firstCity AND secondCity=:secondCity");
+		query.setParameter("firstCity", firstCity);
+		query.setParameter("secondCity", secondCity);
+		return Optional.of((Route) query.getSingleResult());
 	}
 
 	public Optional<Route> findById(Long id) {

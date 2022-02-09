@@ -1,4 +1,4 @@
-package com.itechart.demo.repository.entity.jdbc_template;
+package com.itechart.demo.repository.jdbc_template;
 
 import com.itechart.demo.repository.entity.City;
 import com.itechart.demo.repository.entity.Route;

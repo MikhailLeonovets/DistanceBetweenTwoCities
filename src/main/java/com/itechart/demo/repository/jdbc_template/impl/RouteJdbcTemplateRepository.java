@@ -1,16 +1,17 @@
-package com.itechart.demo.repository.entity.jdbc_template.impl;
+package com.itechart.demo.repository.jdbc_template.impl;
 
 import com.itechart.demo.repository.entity.City;
 import com.itechart.demo.repository.entity.Route;
-import com.itechart.demo.repository.entity.jdbc_template.DataSourceProvider;
-import com.itechart.demo.repository.entity.jdbc_template.RouteDao;
-import com.itechart.demo.repository.entity.jdbc_template.mapper.RouteMapper;
+import com.itechart.demo.repository.jdbc_template.DataSourceProvider;
+import com.itechart.demo.repository.jdbc_template.RouteDao;
+import com.itechart.demo.repository.jdbc_template.mapper.RouteMapper;
 import org.springframework.context.annotation.Scope;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.ApplicationScope;
 
+import java.awt.dnd.DragSourceMotionListener;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,7 +36,7 @@ public class RouteJdbcTemplateRepository implements RouteDao {
 		parameters.put("second_city_id", route.getSecondCity().getId());
 		parameters.put("distance", route.getDistance());
 		parameters.put("version", route.getVersion());
-		route.setId((Long) simpleJdbcInsert.executeAndReturnKey(parameters));
+		route.setId(Long.parseLong(simpleJdbcInsert.executeAndReturnKey(parameters).toString()));
 		return route;
 	}
 
@@ -51,13 +52,21 @@ public class RouteJdbcTemplateRepository implements RouteDao {
 
 	@Override
 	public Optional<Route> findRouteBetweenCities(City firstCity, City secondCity) {
-		return Optional.of(jdbcTemplate.queryForObject("SELECT * FROM route WHERE first_city_id=? AND second_city_id=?",
-				new RouteMapper(), firstCity.getId(), secondCity.getId()));
+		List<Route> route = jdbcTemplate.query("SELECT * FROM route WHERE first_city_id=? AND second_city_id=?",
+				new RouteMapper(), firstCity.getId(), secondCity.getId());
+		if (route.isEmpty()) {
+			return Optional.empty();
+		}
+		return Optional.of(route.get(0));
 	}
 
 	@Override
 	public Optional<Route> findById(Long id) {
-		return Optional.of(jdbcTemplate.queryForObject("SELECT * FROM route WHERE id=?", new RouteMapper(), id));
+		List<Route> route = jdbcTemplate.query("SELECT * FROM route WHERE id=?", new RouteMapper(), id);
+		if (route.isEmpty()) {
+			return Optional.empty();
+		}
+		return Optional.of(route.get(0));
 	}
 
 	@Override

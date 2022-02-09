@@ -1,5 +1,6 @@
 package com.itechart.demo.repository.hibernate;
 
+import com.itechart.demo.repository.entity.Route;
 import com.itechart.demo.repository.hibernate.config.HibernateUtil;
 import com.itechart.demo.repository.entity.City;
 import org.hibernate.Criteria;
@@ -12,6 +13,7 @@ import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,10 +25,10 @@ public class CityHibernateRepository {
 	public City save(City city) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		session.beginTransaction();
-		session.save(city);
+		city.setId((Long) session.save(city));
 		session.flush();
 		session.close();
-		return session.find(City.class, city);
+		return city;
 	}
 
 	public List<City> findAll() {
@@ -45,10 +47,12 @@ public class CityHibernateRepository {
 
 	public Optional<City> findByName(String name) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
-		City city = session.byNaturalId(City.class)
-				.using("name", name)
-				.load();
-		return Optional.of(city);
+		CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+		CriteriaQuery<City> criteriaQuery = criteriaBuilder.createQuery(City.class);
+		Root<City> root = criteriaQuery.from(City.class);
+		criteriaQuery.select(root).where(root.get("name").in(name));
+		Query result = session.createQuery(criteriaQuery);
+		return result.getResultList().stream().findFirst();
 	}
 
 	public City update(City city) {
@@ -57,7 +61,7 @@ public class CityHibernateRepository {
 		session.saveOrUpdate(city);
 		session.flush();
 		session.close();
-		return session.find(City.class, city);
+		return city;
 	}
 
 	public void delete(City city) {
