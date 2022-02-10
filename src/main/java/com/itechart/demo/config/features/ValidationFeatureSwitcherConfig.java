@@ -7,8 +7,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
-@PropertySource("classpath:config/features.yml")
-@Configuration
+//@PropertySource("classpath:config/features.yml")
+//@Configuration
 public class ValidationFeatureSwitcherConfig {
 	private final RouteValidator routeValidator;
 

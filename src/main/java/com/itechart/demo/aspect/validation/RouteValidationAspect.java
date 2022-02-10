@@ -10,7 +10,7 @@ import org.aspectj.lang.annotation.Pointcut;
 
 import java.util.Arrays;
 
-@Aspect
+//@Aspect
 public class RouteValidationAspect {
 	private final RouteValidator routeValidator;
 
@@ -18,11 +18,11 @@ public class RouteValidationAspect {
 		this.routeValidator = routeValidator;
 	}
 
-	@Pointcut("execution(* com.itechart.demo.service.RouteService.save(..)) && args(..)")
+	//@Pointcut("execution(* com.itechart.demo.service.RouteService.save(..)) && args(..)")
 	public void callAtRouteSaveMethod() {
 	}
 
-	@Before("callAtRouteSaveMethod()")
+	//@Before("callAtRouteSaveMethod()")
 	public void beforeCallAtRouteSaveMethod(JoinPoint joinPoint) throws RouteExistsValidationException {
 		Route route = (Route) Arrays.stream(joinPoint.getArgs()).findFirst().get();
 		routeValidator.checkDoesRouteExist(route);
