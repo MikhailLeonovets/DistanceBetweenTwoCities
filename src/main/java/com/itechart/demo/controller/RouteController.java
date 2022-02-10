@@ -54,6 +54,7 @@ public class RouteController {
 	@PutMapping("/{id}")
 	public ResponseEntity<?> updateRoute(@PathVariable Long id,
 	                                     @RequestBody Route route) {
+		route.setId(id);
 		routeService.update(route);
 		return ResponseEntity.ok(new MessageResponse(routeUpdated));
 	}
@@ -63,5 +64,4 @@ public class RouteController {
 		routeService.deleteById(id);
 		return ResponseEntity.ok(new MessageResponse(routeDeleted));
 	}
-
 }

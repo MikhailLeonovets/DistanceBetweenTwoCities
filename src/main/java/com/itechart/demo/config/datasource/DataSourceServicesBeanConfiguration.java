@@ -1,4 +1,4 @@
-package com.itechart.demo.config;
+package com.itechart.demo.config.datasource;
 
 import com.itechart.demo.cache.CityCache;
 import com.itechart.demo.cache.RouteCache;
