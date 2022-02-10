@@ -14,7 +14,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service("routeCacheService")
-public class RouteCacheService implements RouteService {
+public class RouteCacheService extends RouteService {
 	private final RouteCache routeCache;
 	private final RouteCacheInitializer routeCacheInitializer;
 
@@ -24,7 +24,7 @@ public class RouteCacheService implements RouteService {
 	}
 
 	@Override
-	public Route save(Route route) {
+	public Route saveInDataBase(Route route) {
 		routeCache.getRoutes().add(route);
 		return route;
 	}

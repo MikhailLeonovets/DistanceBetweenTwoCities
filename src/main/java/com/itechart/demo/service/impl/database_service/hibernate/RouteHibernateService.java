@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class RouteHibernateService implements RouteService {
+public class RouteHibernateService extends RouteService {
 	private final RouteHibernateRepository repository;
 
 	public RouteHibernateService(RouteHibernateRepository repository) {
@@ -19,7 +19,7 @@ public class RouteHibernateService implements RouteService {
 	}
 
 	@Override
-	public Route save(Route route) {
+	public Route saveInDataBase(Route route) {
 		return repository.save(route);
 	}
 

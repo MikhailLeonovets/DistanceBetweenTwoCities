@@ -2,11 +2,7 @@ package com.itechart.demo.aspect.validation;
 
 import com.itechart.demo.repository.entity.Route;
 import com.itechart.demo.validator.RouteValidator;
-import com.itechart.demo.validator.exception.RouteExistsValidationException;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
 
 import java.util.Arrays;
 
@@ -23,8 +19,8 @@ public class RouteValidationAspect {
 	}
 
 	//@Before("callAtRouteSaveMethod()")
-	public void beforeCallAtRouteSaveMethod(JoinPoint joinPoint) throws RouteExistsValidationException {
+	public void beforeCallAtRouteSaveMethod(JoinPoint joinPoint) {
 		Route route = (Route) Arrays.stream(joinPoint.getArgs()).findFirst().get();
-		routeValidator.checkDoesRouteExist(route);
+		routeValidator.checkRouteExists(route);
 	}
 }

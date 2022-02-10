@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service("routeServiceImpl")
-public class RouteSpringDataService implements RouteService {
+public class RouteSpringDataService extends RouteService {
 	private final RouteRepository routeRepository;
 
 	public RouteSpringDataService(RouteRepository routeRepository) {
@@ -21,7 +21,7 @@ public class RouteSpringDataService implements RouteService {
 
 	@Override
 	@Transactional
-	public Route save(Route route) {
+	public Route saveInDataBase(Route route) {
 		return routeRepository.save(route);
 	}
 
@@ -50,7 +50,7 @@ public class RouteSpringDataService implements RouteService {
 
 	@Override
 	public Route update(Route route) {
-		return save(route);
+		return saveInDataBase(route);
 	}
 
 	@Override

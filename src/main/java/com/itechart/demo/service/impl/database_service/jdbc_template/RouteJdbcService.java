@@ -9,7 +9,7 @@ import com.itechart.demo.service.exception.RouteNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
-public class RouteJdbcService implements RouteService {
+public class RouteJdbcService extends RouteService {
 	private final RouteJdbcTemplateRepository repository;
 
 	public RouteJdbcService(RouteJdbcTemplateRepository repository) {
@@ -17,7 +17,7 @@ public class RouteJdbcService implements RouteService {
 	}
 
 	@Override
-	public Route save(Route route) {
+	public Route saveInDataBase(Route route) {
 		return repository.save(route);
 	}
 

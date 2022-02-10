@@ -3,25 +3,36 @@ package com.itechart.demo.service;
 import com.itechart.demo.repository.entity.City;
 import com.itechart.demo.repository.entity.Route;
 import com.itechart.demo.service.exception.RouteNotFoundException;
+import com.itechart.demo.validator.RouteValidator;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-public interface RouteService {
+public abstract class RouteService {
+	@Autowired
+	private RouteValidator routeValidator;
 
-	Route save(Route route);
+	public abstract Route saveInDataBase(Route route);
 
-	List<Route> findAll();
+	public Route save(Route route) {
+		if (routeValidator.checkRouteExists(route)) {
+			return route;
+		}
+		return saveInDataBase(route);
+	}
 
-	Route findById(Long id) throws RouteNotFoundException;
+	public abstract List<Route> findAll();
 
-	List<Route> findRoutesByFirstCity(City firstCity) throws RouteNotFoundException;
+	public abstract Route findById(Long id) throws RouteNotFoundException;
 
-	Route update(Route route);
+	public abstract List<Route> findRoutesByFirstCity(City firstCity) throws RouteNotFoundException;
 
-	Route findRouteBetweenCities(City firstCity, City secondCity) throws RouteNotFoundException;
+	public abstract Route update(Route route);
 
-	void deleteById(Long id) throws RouteNotFoundException;
+	public abstract Route findRouteBetweenCities(City firstCity, City secondCity) throws RouteNotFoundException;
 
-	void delete(Route route);
+	public abstract void deleteById(Long id) throws RouteNotFoundException;
+
+	public abstract void delete(Route route);
 
 }
