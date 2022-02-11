@@ -4,11 +4,9 @@ import com.itechart.demo.repository.entity.City;
 import com.itechart.demo.repository.jdbc_template.CityDao;
 import com.itechart.demo.repository.jdbc_template.DataSourceProvider;
 import com.itechart.demo.repository.jdbc_template.mapper.CityMapper;
-import org.springframework.context.annotation.Scope;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
-import org.springframework.stereotype.Component;
-import org.springframework.web.context.annotation.ApplicationScope;
+import org.springframework.stereotype.Repository;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -16,9 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-@Component
-@Scope("singleton")
-@ApplicationScope
+@Repository
 public class CityJdbcTemplateRepository implements CityDao {
 	private final JdbcTemplate jdbcTemplate;
 

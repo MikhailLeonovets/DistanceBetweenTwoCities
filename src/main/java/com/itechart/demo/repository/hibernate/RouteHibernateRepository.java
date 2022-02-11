@@ -4,22 +4,16 @@ import com.itechart.demo.repository.entity.City;
 import com.itechart.demo.repository.hibernate.config.HibernateUtil;
 import com.itechart.demo.repository.entity.Route;
 import org.hibernate.Session;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-import org.springframework.web.context.annotation.ApplicationScope;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import javax.swing.text.html.Option;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Component
-@Scope("singleton")
-@ApplicationScope
+@Repository
 public class RouteHibernateRepository {
 	public Route save(Route route) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
