@@ -3,6 +3,7 @@ package com.itechart.demo.service;
 import com.itechart.demo.repository.entity.City;
 import com.itechart.demo.repository.entity.Route;
 import com.itechart.demo.service.exception.RouteNotFoundException;
+import com.itechart.demo.togglz.RouteValidationFeature;
 import com.itechart.demo.validator.RouteValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -15,8 +16,10 @@ public abstract class RouteService {
 	public abstract Route saveInDataBase(Route route);
 
 	public Route save(Route route) {
-		if (routeValidator.checkRouteExists(route)) {
-			return route;
+		if (RouteValidationFeature.VALIDATION_FEATURE.isActive()) {
+			if (routeValidator.checkRouteExists(route)) {
+				return route;
+			}
 		}
 		return saveInDataBase(route);
 	}

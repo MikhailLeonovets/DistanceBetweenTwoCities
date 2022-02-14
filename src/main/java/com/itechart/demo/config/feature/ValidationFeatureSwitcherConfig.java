@@ -1,11 +1,9 @@
-package com.itechart.demo.config.features;
+package com.itechart.demo.config.feature;
 
 import com.itechart.demo.aspect.validation.RouteValidationAspect;
 import com.itechart.demo.validator.RouteValidator;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 
 //@PropertySource("classpath:config/features.yml")
 //@Configuration
