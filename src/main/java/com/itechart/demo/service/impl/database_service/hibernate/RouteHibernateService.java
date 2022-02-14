@@ -61,8 +61,8 @@ public class RouteHibernateService extends RouteService {
 	}
 
 	@Override
-	public void deleteById(Long id) throws RouteNotFoundException {
-		repository.deleteById(id); //todo
+	public void deleteById(Long id) {
+		repository.deleteById(id);
 	}
 
 	@Override

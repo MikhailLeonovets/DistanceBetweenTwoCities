@@ -53,7 +53,7 @@ public class RouteController {
 
 	@PutMapping("/{id}")
 	public ResponseEntity<?> updateRoute(@PathVariable Long id,
-	                                     @RequestBody Route route) {
+	                                     @RequestBody Route route) throws RouteNotFoundException {
 		route.setId(id);
 		routeService.update(route);
 		return ResponseEntity.ok(new MessageResponse(routeUpdated));

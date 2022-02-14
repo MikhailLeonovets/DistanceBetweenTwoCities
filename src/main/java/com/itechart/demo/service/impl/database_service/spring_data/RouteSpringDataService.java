@@ -49,8 +49,10 @@ public class RouteSpringDataService extends RouteService {
 	}
 
 	@Override
-	public Route update(Route route) {
-		return saveInDataBase(route);
+	public Route update(Route route) throws RouteNotFoundException {
+		Route routeDataBase = findById(route.getId());
+		routeDataBase.setDistance(route.getDistance());
+		return routeRepository.save(routeDataBase);
 	}
 
 	@Override

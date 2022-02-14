@@ -51,7 +51,7 @@ public class CityHibernateService implements CityService { //TODO
 	}
 
 	@Override
-	public void deleteById(Long id) throws CityNotFoundException {
+	public void deleteById(Long id) {
 		repository.deleteById(id);
 	}
 

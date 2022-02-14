@@ -9,12 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-public abstract class RouteService {
+public abstract class RouteService{
 	@Autowired
 	private RouteValidator routeValidator;
 
 	public abstract Route saveInDataBase(Route route);
-
 	public Route save(Route route) {
 		if (RouteValidationFeature.VALIDATION_FEATURE.isActive()) {
 			if (routeValidator.checkRouteExists(route)) {
@@ -30,7 +29,7 @@ public abstract class RouteService {
 
 	public abstract List<Route> findRoutesByFirstCity(City firstCity) throws RouteNotFoundException;
 
-	public abstract Route update(Route route);
+	public abstract Route update(Route route) throws RouteNotFoundException;
 
 	public abstract Route findRouteBetweenCities(City firstCity, City secondCity) throws RouteNotFoundException;
 
