@@ -14,6 +14,7 @@ public abstract class RouteService{
 	private RouteValidator routeValidator;
 
 	public abstract Route saveInDataBase(Route route);
+
 	public Route save(Route route) {
 		if (RouteValidationFeature.VALIDATION_FEATURE.isActive()) {
 			if (routeValidator.checkRouteExists(route)) {

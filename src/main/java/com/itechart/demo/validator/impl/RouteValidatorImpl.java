@@ -3,13 +3,11 @@ package com.itechart.demo.validator.impl;
 import com.itechart.demo.repository.entity.Route;
 import com.itechart.demo.repository.spring_data.RouteRepository;
 import com.itechart.demo.validator.RouteValidator;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
 @Component
-@Scope("prototype")
 public class RouteValidatorImpl implements RouteValidator {
 	private final RouteRepository repository;
 
