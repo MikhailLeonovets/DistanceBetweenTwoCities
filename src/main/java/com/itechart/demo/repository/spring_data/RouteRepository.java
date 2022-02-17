@@ -15,6 +15,4 @@ public interface RouteRepository extends JpaRepository<Route, Long> {
 
 	Optional<Route> findByFirstCityIdAndSecondCityId(Long firstCityId, Long secondCityId);
 
-	
-
 }
