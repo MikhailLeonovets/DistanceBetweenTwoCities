@@ -4,7 +4,6 @@ import com.itechart.demo.repository.entity.City;
 import com.itechart.demo.repository.spring_data.CityRepository;
 import com.itechart.demo.service.exception.CityNotFoundException;
 import org.assertj.core.api.AssertionsForClassTypes;
-import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
