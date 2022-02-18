@@ -8,6 +8,7 @@ import com.itechart.demo.service.PathService;
 import com.itechart.demo.service.RouteService;
 import com.itechart.demo.service.converter.CitiesAndRoutesToGraphConverter;
 import com.itechart.demo.service.exception.CityNotFoundException;
+import com.itechart.demo.service.exception.GraphNullException;
 import com.itechart.demo.service.exception.PathNotFoundException;
 import com.itechart.demo.service.exception.RouteNotFoundException;
 import com.itechart.demo.service.model.Graph;
@@ -37,19 +38,19 @@ public class PathServiceImpl implements PathService {
 
 	@Override
 	public Set<Path> getPaths(Long firstCityId, Long secondCityId) throws PathNotFoundException, RouteNotFoundException,
-			CityNotFoundException {
+			CityNotFoundException, GraphNullException {
 		Graph graphCity = citiesAndRoutesToGraphConverter.convert(cityService.findAll(), routeService.findAll());
 		City firstCity = cityService.findById(firstCityId);
 		City secondCity = cityService.findById(secondCityId);
 		Set<LinkedList<String>> stringPaths = pathDepthFirstSearchCalculatorService.calculatePaths(graphCity,
 				firstCity.getName(),
 				secondCity.getName());
+		if (stringPaths.isEmpty()) {
+			throw new PathNotFoundException();
+		}
 		Set<Path> paths = new HashSet<>();
 		for (LinkedList<String> stringPath : stringPaths) {
 			paths.add(convertNodesToPath(stringPath));
-		}
-		if (paths.isEmpty()) {
-			throw new PathNotFoundException();
 		}
 		return paths;
 	}
@@ -59,8 +60,9 @@ public class PathServiceImpl implements PathService {
 		Float totalDistance = 0f;
 		Set<Route> routes = new HashSet<>();
 		for (int i = 1; i < nodes.size(); i++) {
-			Route route = routeService.findRouteBetweenCities(cityService.findByName(nodes.get(i - 1)),
-					cityService.findByName(nodes.get(i)));
+			City firstCity = cityService.findByName(nodes.get(i - 1));
+			City secondCity = cityService.findByName(nodes.get(i));
+			Route route = routeService.findRouteBetweenCities(firstCity, secondCity);
 			totalDistance += route.getDistance();
 			routes.add(route);
 		}
