@@ -76,7 +76,8 @@ class CitySpringDataServiceTest {
 		// Given
 		Mockito.doReturn(Optional.empty()).when(cityRepository).findByName(ArgumentMatchers.any());
 
-		// When and Then
+		// When
+		// Then
 		Assertions.assertThrows(CityNotFoundException.class,
 				() -> citySpringDataService.findByName(CITY_NAME_NEW_YORK));
 	}
@@ -101,7 +102,8 @@ class CitySpringDataServiceTest {
 		// Given
 		BDDMockito.given(cityRepository.findById(CITY_ID)).willReturn(Optional.empty());
 
-		//When and Then
+		// When
+		// Then
 		Assertions.assertThrows(CityNotFoundException.class, () -> citySpringDataService.findById(CITY_ID));
 	}
 

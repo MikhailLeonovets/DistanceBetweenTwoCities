@@ -22,6 +22,11 @@ class RouteRepositoryTest {
 	@Autowired
 	private CityRepository cityRepository;
 
+	private static final String CITY_NAME_NEW_YORK = "New York";
+	private static final String CITY_NAME_LA = "LA";
+
+	private static final Float DISTANCE = 23F;
+
 	@AfterEach
 	void tearDown() {
 		routeRepository.deleteAll();
@@ -30,21 +35,26 @@ class RouteRepositoryTest {
 
 	@Test
 	void findNoRoutesByFirstCity() {
+		// Given
 		City city = new City();
-		city.setName("New York");
+		city.setName(CITY_NAME_NEW_YORK);
 		city = cityRepository.save(city);
+
+		// When
 		List<Route> routeList = routeRepository.findRoutesByFirstCity(city);
 
+		// Then
 		assertThat(routeList).asList().isEmpty();
 	}
 
 	@Test
 	void findOneRouteByFirstCity() {
+		// Given
 		City firstCity = new City();
-		firstCity.setName("New York");
+		firstCity.setName(CITY_NAME_NEW_YORK);
 
 		City secondCity = new City();
-		secondCity.setName("LA");
+		secondCity.setName(CITY_NAME_LA);
 
 		firstCity = cityRepository.save(firstCity);
 		secondCity = cityRepository.save(secondCity);
@@ -52,38 +62,45 @@ class RouteRepositoryTest {
 		Route route = new Route();
 		route.setFirstCity(firstCity);
 		route.setSecondCity(secondCity);
-		route.setDistance(25f);
+		route.setDistance(DISTANCE);
 		routeRepository.save(route);
 
+		// When
 		List<Route> routeList = routeRepository.findRoutesByFirstCity(firstCity);
 
-		assertThat(routeList).asList().size().isEqualTo(1);
+		// Then
+		int expectedResultListSize = 1;
+		assertThat(routeList).asList().size().isEqualTo(expectedResultListSize);
 	}
 
 	@Test
 	void findNoRouteBetweenTwoCities() {
+		// Given
 		City firstCity = new City();
-		firstCity.setName("New York");
+		firstCity.setName(CITY_NAME_NEW_YORK);
 
 		City secondCity = new City();
-		secondCity.setName("LA");
+		secondCity.setName(CITY_NAME_LA);
 
 		firstCity = cityRepository.save(firstCity);
 		secondCity = cityRepository.save(secondCity);
 
+		// When
 		Optional<Route> optionalRoute
 				= routeRepository.findByFirstCityIdAndSecondCityId(firstCity.getId(), secondCity.getId());
 
+		// Then
 		assertThat(optionalRoute.isPresent()).isFalse();
 	}
 
 	@Test
 	void findRouteBetweenTwoCities() {
+		// Given
 		City firstCity = new City();
-		firstCity.setName("New York");
+		firstCity.setName(CITY_NAME_NEW_YORK);
 
 		City secondCity = new City();
-		secondCity.setName("LA");
+		secondCity.setName(CITY_NAME_LA);
 
 		firstCity = cityRepository.save(firstCity);
 		secondCity = cityRepository.save(secondCity);
@@ -94,9 +111,11 @@ class RouteRepositoryTest {
 		route.setDistance(25f);
 		routeRepository.save(route);
 
+		// When
 		Optional<Route> optionalRoute
 				= routeRepository.findByFirstCityIdAndSecondCityId(firstCity.getId(), secondCity.getId());
 
+		// Then
 		assertThat(optionalRoute.isPresent()).isTrue();
 	}
 }

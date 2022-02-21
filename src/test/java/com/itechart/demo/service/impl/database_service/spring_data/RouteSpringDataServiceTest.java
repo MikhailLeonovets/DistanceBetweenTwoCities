@@ -4,7 +4,6 @@ import com.itechart.demo.repository.entity.City;
 import com.itechart.demo.repository.entity.Route;
 import com.itechart.demo.repository.spring_data.RouteRepository;
 import com.itechart.demo.service.exception.RouteNotFoundException;
-import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,119 +17,168 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @ExtendWith(MockitoExtension.class)
 class RouteSpringDataServiceTest {
 	@Mock
 	private RouteRepository repository;
-	private RouteSpringDataService underTest;
+	private RouteSpringDataService routeSpringDataService;
+
+	private static final Long ID_1 = 1L;
 
 	@BeforeEach
 	void setUp() {
-		underTest = new RouteSpringDataService(repository);
+		routeSpringDataService = new RouteSpringDataService(repository);
 	}
 
 	@Test
-	void canSaveInDataBase() {
+	void testSaveInDataBase() {
+		// Given
 		Route route = new Route();
-		underTest.saveInDataBase(route);
+
+		// When
+		routeSpringDataService.saveInDataBase(route);
+
+		// Then
 		Mockito.verify(repository).save(route);
 	}
 
 	@Test
-	void canFindAll() {
-		underTest.findAll();
+	void testFindAll() {
+		// When
+		routeSpringDataService.findAll();
+
+		// Then
 		Mockito.verify(repository).findAll();
 	}
 
 	@Test
-	void canFindById() throws RouteNotFoundException {
-		Long id = 1L;
+	void testFindById() throws RouteNotFoundException {
+		// Given
 		Route route = new Route();
-		Mockito.doReturn(Optional.of(route)).when(repository).findById(id);
-		Route returnedRoute = underTest.findById(id);
-		Mockito.verify(repository).findById(ArgumentMatchers.eq(id));
+		route.setId(ID_1);
+		Mockito.doReturn(Optional.of(route)).when(repository).findById(ID_1);
+
+		// When
+		Route returnedRoute = routeSpringDataService.findById(ID_1);
+
+		// Then
+		Mockito.verify(repository).findById(ArgumentMatchers.eq(ID_1));
 		Assertions.assertNotNull(returnedRoute);
 	}
 
 	@Test
-	void findByIdThrowsRouteNotFoundException() {
+	void testFindByIdThrowsRouteNotFoundException() {
+		// Given
 		Mockito.doReturn(Optional.empty()).when(repository).findById(ArgumentMatchers.any());
-		AssertionsForClassTypes.assertThatThrownBy(() -> underTest.findById(ArgumentMatchers.any()))
-				.isInstanceOf(RouteNotFoundException.class);
+
+		// When
+		// Then
+		Assertions.assertThrows(RouteNotFoundException.class,
+				() -> routeSpringDataService.findById(ArgumentMatchers.any()));
 	}
 
 	@Test
-	void canFindRoutesByFirstCity() throws RouteNotFoundException {
+	void testFindRoutesByFirstCity() throws RouteNotFoundException {
+		// Given
 		Route route = new Route();
 		City city = new City();
 		List<Route> routeList = new ArrayList<>();
 		routeList.add(route);
 		Mockito.doReturn(routeList).when(repository).findRoutesByFirstCity(city);
-		underTest.findRoutesByFirstCity(city);
+
+		// When
+		routeSpringDataService.findRoutesByFirstCity(city);
+
+		// Then
 		Mockito.verify(repository).findRoutesByFirstCity(city);
 	}
 
 	@Test
-	void findRoutesByFirstCityThrowsRouteNotFoundException() {
+	void testFindRoutesByFirstCityThrowsRouteNotFoundException() {
+		// Given
 		City city = new City();
 		List<Route> routes = new ArrayList<>();
 		Mockito.doReturn(routes).when(repository).findRoutesByFirstCity(city);
-		AssertionsForClassTypes.assertThatThrownBy(() -> underTest.findRoutesByFirstCity(city))
-				.isInstanceOf(RouteNotFoundException.class);
+
+		// When
+		// Then
+		Assertions.assertThrows(RouteNotFoundException.class, () -> routeSpringDataService.findRoutesByFirstCity(city));
 	}
 
 	@Test
-	void canUpdate() throws RouteNotFoundException {
+	void testUpdate() throws RouteNotFoundException {
+		// Given
 		Route route = new Route();
 		Mockito.doReturn(Optional.of(route)).when(repository).findById(route.getId());
-		underTest.update(route);
+
+		// When
+		routeSpringDataService.update(route);
+
+		// Then
 		Mockito.verify(repository).save(route);
 	}
 
 	@Test
-	void updateThrowsRouteNotFoundException() {
+	void testUpdateThrowsRouteNotFoundException() {
+		// Given
 		Route route = new Route();
 		Mockito.doReturn(Optional.empty()).when(repository).findById(route.getId());
-		AssertionsForClassTypes.assertThatThrownBy(() -> underTest.update(route))
-				.isInstanceOf(RouteNotFoundException.class);
+
+		// When
+		// Then
+		Assertions.assertThrows(RouteNotFoundException.class, () -> routeSpringDataService.update(route));
 		Mockito.verify(repository, Mockito.never()).save(route);
 	}
 
 	@Test
-	void canFindRouteBetweenCities() throws RouteNotFoundException {
+	void testFindRouteBetweenCities() throws RouteNotFoundException {
+		// Given
 		City firstCity = new City();
 		City secondCity = new City();
 		Route route = new Route();
 		Mockito.doReturn(Optional.of(route)).when(repository)
 				.findByFirstCityIdAndSecondCityId(firstCity.getId(), secondCity.getId());
-		underTest.findRouteBetweenCities(firstCity, secondCity);
+
+		// When
+		routeSpringDataService.findRouteBetweenCities(firstCity, secondCity);
+
+		// Then
 		Mockito.verify(repository).findByFirstCityIdAndSecondCityId(firstCity.getId(), secondCity.getId());
 	}
 
 	@Test
-	void findRouteBetweenCities() {
+	void testFindRouteBetweenCitiesThrowsRouteNotFoundException() {
+		// Given
 		City firstCity = new City();
 		City secondCity = new City();
 		Mockito.doReturn(Optional.empty()).when(repository)
 				.findByFirstCityIdAndSecondCityId(firstCity.getId(), secondCity.getId());
-		AssertionsForClassTypes.assertThatThrownBy(() -> underTest.findRouteBetweenCities(firstCity, secondCity))
-				.isInstanceOf(RouteNotFoundException.class);
+
+		// When
+		// Then
+		Assertions.assertThrows(RouteNotFoundException.class,
+				() -> routeSpringDataService.findRouteBetweenCities(firstCity, secondCity));
 		Mockito.verify(repository).findByFirstCityIdAndSecondCityId(firstCity.getId(), secondCity.getId());
 	}
 
 	@Test
-	void deleteById() {
-		Long id = 1L;
-		underTest.deleteById(id);
-		Mockito.verify(repository).deleteById(id);
+	void testDeleteById() {
+		// When
+		routeSpringDataService.deleteById(ID_1);
+
+		// Then
+		Mockito.verify(repository).deleteById(ID_1);
 	}
 
 	@Test
-	void delete() {
+	void testDelete() {
+		// Given
 		Route route = new Route();
-		underTest.delete(route);
+
+		// When
+		routeSpringDataService.delete(route);
+
+		// Then
 		Mockito.verify(repository).delete(route);
 	}
 }
