@@ -1,5 +1,6 @@
 package com.itechart.demo.service.impl;
 
+import com.itechart.demo.service.exception.EmptyInputException;
 import com.itechart.demo.service.exception.GraphNullException;
 import com.itechart.demo.service.model.Graph;
 import com.itechart.demo.service.PathDepthFirstSearchCalculatorService;
@@ -17,13 +18,17 @@ public class PathDepthFirstSearchCalculatorServiceImpl implements PathDepthFirst
 
 	@Override
 	public Set<LinkedList<String>> calculatePaths(Graph graph, String startNode, String endNode)
-			throws GraphNullException {
+			throws GraphNullException, EmptyInputException {
 		if (graph == null
 				|| startNode == null
 				|| endNode == null) {
 			throw new GraphNullException();
 		}
-		//if empty todo
+		if (graph.getGraph().isEmpty()
+				|| startNode.isEmpty()
+				|| endNode.isEmpty()) {
+			throw new EmptyInputException();
+		}
 		Set<LinkedList<String>> paths = new HashSet<>();
 		LinkedList<String> visited = new LinkedList<>();
 		visited.add(startNode);

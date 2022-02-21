@@ -2,6 +2,7 @@ package com.itechart.demo.controller;
 
 import com.itechart.demo.service.PathService;
 import com.itechart.demo.service.exception.CityNotFoundException;
+import com.itechart.demo.service.exception.EmptyInputException;
 import com.itechart.demo.service.exception.GraphNullException;
 import com.itechart.demo.service.exception.PathNotFoundException;
 import com.itechart.demo.service.exception.RouteNotFoundException;
@@ -24,7 +25,8 @@ public class PathController {
 
 	@GetMapping("/{firstCityId}/{secondCityId}")
 	public Set<Path> getPaths(@PathVariable Long firstCityId, @PathVariable Long secondCityId)
-			throws PathNotFoundException, RouteNotFoundException, CityNotFoundException, GraphNullException {
+			throws PathNotFoundException, RouteNotFoundException, CityNotFoundException, GraphNullException,
+			EmptyInputException {
 		return pathService.getPaths(firstCityId, secondCityId);
 	}
 }

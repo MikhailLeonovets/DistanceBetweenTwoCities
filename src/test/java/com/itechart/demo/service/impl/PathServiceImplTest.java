@@ -7,6 +7,7 @@ import com.itechart.demo.service.PathDepthFirstSearchCalculatorService;
 import com.itechart.demo.service.RouteService;
 import com.itechart.demo.service.converter.CitiesAndRoutesToGraphConverter;
 import com.itechart.demo.service.exception.CityNotFoundException;
+import com.itechart.demo.service.exception.EmptyInputException;
 import com.itechart.demo.service.exception.GraphNullException;
 import com.itechart.demo.service.exception.PathNotFoundException;
 import com.itechart.demo.service.exception.RouteNotFoundException;
@@ -71,7 +72,7 @@ class PathServiceImplTest {
 
 	@Test
 	void canGetMultiPaths() throws GraphNullException, PathNotFoundException, RouteNotFoundException,
-			CityNotFoundException {
+			CityNotFoundException, EmptyInputException {
 		String nodeA = "A";
 		String nodeB = "B";
 		String nodeC = "C";
@@ -194,7 +195,7 @@ class PathServiceImplTest {
 	}
 
 	@Test
-	void getPathsThrowsPathNotFoundException() throws GraphNullException, PathNotFoundException, CityNotFoundException {
+	void getPathsThrowsPathNotFoundException() throws GraphNullException, PathNotFoundException, CityNotFoundException, EmptyInputException {
 		City firstCity = new City();
 		Long firstCityId = 1L;
 		String firstCityName = "London";

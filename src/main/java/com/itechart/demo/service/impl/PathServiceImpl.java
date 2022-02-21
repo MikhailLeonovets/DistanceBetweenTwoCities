@@ -8,6 +8,7 @@ import com.itechart.demo.service.PathService;
 import com.itechart.demo.service.RouteService;
 import com.itechart.demo.service.converter.CitiesAndRoutesToGraphConverter;
 import com.itechart.demo.service.exception.CityNotFoundException;
+import com.itechart.demo.service.exception.EmptyInputException;
 import com.itechart.demo.service.exception.GraphNullException;
 import com.itechart.demo.service.exception.PathNotFoundException;
 import com.itechart.demo.service.exception.RouteNotFoundException;
@@ -38,7 +39,7 @@ public class PathServiceImpl implements PathService {
 
 	@Override
 	public Set<Path> getPaths(Long firstCityId, Long secondCityId) throws PathNotFoundException, RouteNotFoundException,
-			CityNotFoundException, GraphNullException {
+			CityNotFoundException, GraphNullException, EmptyInputException {
 		Graph graphCity = citiesAndRoutesToGraphConverter.convert(cityService.findAll(), routeService.findAll());
 		City firstCity = cityService.findById(firstCityId);
 		City secondCity = cityService.findById(secondCityId);

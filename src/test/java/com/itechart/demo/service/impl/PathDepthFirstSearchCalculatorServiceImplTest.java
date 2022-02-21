@@ -1,8 +1,8 @@
 package com.itechart.demo.service.impl;
 
+import com.itechart.demo.service.exception.EmptyInputException;
 import com.itechart.demo.service.exception.GraphNullException;
 import com.itechart.demo.service.model.Graph;
-import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,13 +30,150 @@ class PathDepthFirstSearchCalculatorServiceImplTest {
 
 	@Test
 	void testCalculatePathsThrowsGraphNullExceptionBecauseGraphIsNull() {
+		// Given
 		Graph graph = null;
-		AssertionsForClassTypes.assertThatThrownBy(() -> underTest.calculatePaths(graph, NODE_A, NODE_B))
-				.isInstanceOf(GraphNullException.class);
+		String startNode = NODE_A;
+		String endNode = NODE_B;
+
+		// When
+		// Then
+		Assertions.assertThrows(GraphNullException.class, () -> underTest.calculatePaths(graph, startNode, endNode));
 	}
 
 	@Test
-	void testCalculatePathsWithTwoConnectedNodes() throws GraphNullException {
+	void testCalculatePathsThrowsGraphNullExceptionBecauseStartNodeIsNull() {
+		// Given
+		Graph graph = new Graph();
+		String startNode = null;
+		String endNode = NODE_B;
+
+		// When
+		// Then
+		Assertions.assertThrows(GraphNullException.class, () -> underTest.calculatePaths(graph, startNode, endNode));
+	}
+
+	@Test
+	void testCalculatePathsThrowsGraphNullExceptionBecauseEndNodeIsNull() {
+		// Given
+		Graph graph = new Graph();
+		String startNode = NODE_A;
+		String endNode = null;
+
+		// When
+		// Then
+		Assertions.assertThrows(GraphNullException.class, () -> underTest.calculatePaths(graph, startNode, endNode));
+	}
+
+	@Test
+	void testCalculatePathsThrowsGraphNullExceptionBecauseStartNodeAndEndNodeAreNull() {
+		// Given
+		Graph graph = new Graph();
+		String startNode = null;
+		String endNode = null;
+
+		// When
+		// Then
+		Assertions.assertThrows(GraphNullException.class, () -> underTest.calculatePaths(graph, startNode, endNode));
+	}
+
+	@Test
+	void testCalculatePathsThrowsGraphNullExceptionBecauseGraphAndStartNodeAreNull() {
+		// Given
+		Graph graph = null;
+		String startNode = null;
+		String endNode = NODE_A;
+
+		// When
+		// Then
+		Assertions.assertThrows(GraphNullException.class, () -> underTest.calculatePaths(graph, startNode, endNode));
+	}
+
+	@Test
+	void testCalculatePathsThrowsGraphNullExceptionBecauseGraphAndEndNodeAreNull() {
+		// Given
+		Graph graph = null;
+		String startNode = NODE_A;
+		String endNode = null;
+
+		// When
+		// Then
+		Assertions.assertThrows(GraphNullException.class, () -> underTest.calculatePaths(graph, startNode, endNode));
+	}
+
+	@Test
+	void testCalculatePathsThrowsEmptyInputExceptionBecauseGraphIsEmpty() {
+		// Given
+		Graph graph = new Graph(new HashMap<>());
+		String startNode = NODE_A;
+		String endNode = NODE_B;
+
+		// When
+		// Then
+		Assertions.assertThrows(EmptyInputException.class, () -> underTest.calculatePaths(graph, startNode, endNode));
+	}
+
+	@Test
+	void testCalculatePathsThrowsEmptyInputExceptionBecauseStartNodeIsEmpty() {
+		// Given
+		Graph graph = getGraphWithTwoPathsFromAToC();
+		String startNode = "";
+		String endNode = NODE_B;
+
+		// When
+		// Then
+		Assertions.assertThrows(EmptyInputException.class, () -> underTest.calculatePaths(graph, startNode, endNode));
+	}
+
+	@Test
+	void testCalculatePathsThrowsEmptyInputExceptionBecauseEndNodeIsEmpty() {
+		// Given
+		Graph graph = getGraphWithTwoPathsFromAToC();
+		String startNode = NODE_A;
+		String endNode = "";
+
+		// When
+		// Then
+		Assertions.assertThrows(EmptyInputException.class, () -> underTest.calculatePaths(graph, startNode, endNode));
+	}
+
+	@Test
+	void testCalculatePathsThrowsEmptyInputExceptionBecauseGraphAndStartNodeAreEmpty() {
+		// Given
+		Graph graph = new Graph(new HashMap<>());
+		String startNode = "";
+		String endNode = NODE_A;
+
+		// When
+		// Then
+		Assertions.assertThrows(EmptyInputException.class, () -> underTest.calculatePaths(graph, startNode, endNode));
+	}
+
+	@Test
+	void testCalculatePathsThrowsEmptyInputExceptionBecauseStartNodeAndEndNodeAreEmpty() {
+		// Given
+		Graph graph = getGraphWithTwoPathsFromAToC();
+		String startNode = "";
+		String endNode = "";
+
+		// When
+		// Then
+		Assertions.assertThrows(EmptyInputException.class, () -> underTest.calculatePaths(graph, startNode, endNode));
+	}
+
+	@Test
+	void testCalculatePathsThrowsEmptyInputExceptionBecauseGraphAndEndNodeAreEmpty() {
+		// Given
+		Graph graph = new Graph(new HashMap<>());
+		String startNode = NODE_A;
+		String endNode = "";
+
+		// When
+		// Then
+		Assertions.assertThrows(EmptyInputException.class, () -> underTest.calculatePaths(graph, startNode, endNode));
+	}
+
+	@Test
+	void testCalculatePathsWithTwoConnectedNodes() throws GraphNullException, EmptyInputException {
 		// Given
 		Graph graph = getGraphWithTwoConnectedNodes();
 
@@ -52,7 +189,7 @@ class PathDepthFirstSearchCalculatorServiceImplTest {
 	}
 
 	@Test
-	void testCalculatePathsReturnsNoPathsBetweenNodes() throws GraphNullException {
+	void testCalculatePathsReturnsNoPathsBetweenNodes() throws GraphNullException, EmptyInputException {
 		// Given
 		Graph graph = getGraphWithTwoIsolatedSubGraphs();
 
@@ -65,7 +202,7 @@ class PathDepthFirstSearchCalculatorServiceImplTest {
 	}
 
 	@Test
-	void testCalculatePathsInGraphWithOneNode() throws GraphNullException {
+	void testCalculatePathsInGraphWithOneNode() throws GraphNullException, EmptyInputException {
 		// Given
 		Map<String, LinkedHashSet<String>> graphMap = new HashMap<>();
 		graphMap.put(NODE_A, new LinkedHashSet<>());
@@ -80,7 +217,7 @@ class PathDepthFirstSearchCalculatorServiceImplTest {
 	}
 
 	@Test
-	void testCalculatePathsBetweenTwoNodesWhereOneNodeOutOfGraph() throws GraphNullException {
+	void testCalculatePathsBetweenTwoNodesWhereOneNodeOutOfGraph() throws GraphNullException, EmptyInputException {
 		// Given
 		Map<String, LinkedHashSet<String>> graphMap = new HashMap<>();
 		graphMap.put(NODE_A, new LinkedHashSet<>());
@@ -95,7 +232,7 @@ class PathDepthFirstSearchCalculatorServiceImplTest {
 	}
 
 	@Test
-	void testCalculatePathsBetweenTwoNodesAndReturnsTwoDifferentPaths() throws GraphNullException {
+	void testCalculatePathsBetweenTwoNodesAndReturnsTwoDifferentPaths() throws GraphNullException, EmptyInputException {
 		// Given
 		Graph graph = getGraphWithTwoPathsFromAToC();
 		LinkedList<String> firstPath = new LinkedList<>(Arrays.asList(NODE_A, NODE_B, NODE_C));
@@ -126,7 +263,7 @@ class PathDepthFirstSearchCalculatorServiceImplTest {
 	}
 
 	/**
-	 * @return graph where A and B nodes isolated from D and C nodes.
+	 * @return graph where A and B nodes are isolated from D and C nodes.
 	 */
 	private Graph getGraphWithTwoIsolatedSubGraphs() {
 		LinkedHashSet<String> adjacentNodesToA = new LinkedHashSet<>(Arrays.asList(NODE_B));
@@ -143,7 +280,7 @@ class PathDepthFirstSearchCalculatorServiceImplTest {
 	}
 
 	/**
-	 * @return graph with A and B connected Nodes.
+	 * @return graph where A and B are connected Nodes.
 	 */
 	private Graph getGraphWithTwoConnectedNodes() {
 		LinkedHashSet<String> adjacentNodesToA = new LinkedHashSet<>(Arrays.asList(NODE_B));
