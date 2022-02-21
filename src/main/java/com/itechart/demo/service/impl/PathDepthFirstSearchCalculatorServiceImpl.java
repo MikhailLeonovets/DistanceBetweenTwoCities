@@ -23,6 +23,7 @@ public class PathDepthFirstSearchCalculatorServiceImpl implements PathDepthFirst
 				|| endNode == null) {
 			throw new GraphNullException();
 		}
+		//if empty todo
 		Set<LinkedList<String>> paths = new HashSet<>();
 		LinkedList<String> visited = new LinkedList<>();
 		visited.add(beginNode);

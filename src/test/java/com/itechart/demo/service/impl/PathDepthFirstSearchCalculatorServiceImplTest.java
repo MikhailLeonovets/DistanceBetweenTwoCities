@@ -50,8 +50,8 @@ class PathDepthFirstSearchCalculatorServiceImplTest {
 		graphMap.put(nodeB, adjacentNodesToB);
 		graph.setGraph(graphMap);
 
-		Set<LinkedList<String>> result = underTest.calculatePaths(graph, nodeA, nodeB);
-		Set<LinkedList<String>> expected = new HashSet<>();
+		Set<LinkedList<String>> result = underTest.calculatePaths(graph, nodeA, nodeB); //actual Result todo
+		Set<LinkedList<String>> expected = new HashSet<>(); //todo
 		LinkedList<String> path1 = new LinkedList<>();
 		path1.add(nodeA);
 		path1.add(nodeB);
@@ -126,7 +126,7 @@ class PathDepthFirstSearchCalculatorServiceImplTest {
 	}
 
 	@Test
-	void canCalculatePathsBetweenTwoNodeANdReturnsTwoDifferentPaths() throws GraphNullException {
+	void canCalculatePathsBetweenTwoNodeAndReturnsTwoDifferentPaths() throws GraphNullException {
 		String nodeA = "A";
 		String nodeB = "B";
 		String nodeC = "C";

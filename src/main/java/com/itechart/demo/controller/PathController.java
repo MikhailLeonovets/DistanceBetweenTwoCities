@@ -1,6 +1,5 @@
 package com.itechart.demo.controller;
 
-import com.itechart.demo.repository.entity.City;
 import com.itechart.demo.service.PathService;
 import com.itechart.demo.service.exception.CityNotFoundException;
 import com.itechart.demo.service.exception.GraphNullException;
