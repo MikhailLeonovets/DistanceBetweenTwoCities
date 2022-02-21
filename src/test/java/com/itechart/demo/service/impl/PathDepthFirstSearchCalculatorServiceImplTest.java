@@ -6,8 +6,8 @@ import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -15,10 +15,13 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class PathDepthFirstSearchCalculatorServiceImplTest {
 	private PathDepthFirstSearchCalculatorServiceImpl underTest;
+
+	private static final String NODE_A = "A";
+	private static final String NODE_B = "B";
+	private static final String NODE_C = "C";
+	private static final String NODE_D = "D";
 
 	@BeforeEach
 	void setUp() {
@@ -26,140 +29,129 @@ class PathDepthFirstSearchCalculatorServiceImplTest {
 	}
 
 	@Test
-	void calculatePathsThrowsGraphNullException() {
+	void testCalculatePathsThrowsGraphNullExceptionBecauseGraphIsNull() {
 		Graph graph = null;
-		String beginNode = null;
-		String endNode = null;
-		AssertionsForClassTypes.assertThatThrownBy(() -> underTest.calculatePaths(graph, beginNode, endNode))
+		AssertionsForClassTypes.assertThatThrownBy(() -> underTest.calculatePaths(graph, NODE_A, NODE_B))
 				.isInstanceOf(GraphNullException.class);
 	}
 
 	@Test
-	void canCalculatePathsWithTwoConnectedNodes() throws GraphNullException {
-		String nodeA = "A";
-		String nodeB = "B";
+	void testCalculatePathsWithTwoConnectedNodes() throws GraphNullException {
+		// Given
+		Graph graph = getGraphWithTwoConnectedNodes();
 
-		LinkedHashSet<String> adjacentNodesToA = new LinkedHashSet<>();
-		adjacentNodesToA.add(nodeB);
-		LinkedHashSet<String> adjacentNodesToB = new LinkedHashSet<>();
-		adjacentNodesToB.add(nodeA);
+		// When
+		Set<LinkedList<String>> actualResult = underTest.calculatePaths(graph, NODE_A, NODE_B);
 
-		Graph graph = new Graph();
-		Map<String, LinkedHashSet<String>> graphMap = new HashMap<>();
-		graphMap.put(nodeA, adjacentNodesToA);
-		graphMap.put(nodeB, adjacentNodesToB);
-		graph.setGraph(graphMap);
+		// Then
+		Set<LinkedList<String>> expectedResult = new HashSet<>();
+		LinkedList<String> path1 = new LinkedList<>(Arrays.asList(NODE_A, NODE_B));
+		expectedResult.add(path1);
 
-		Set<LinkedList<String>> result = underTest.calculatePaths(graph, nodeA, nodeB); //actual Result todo
-		Set<LinkedList<String>> expected = new HashSet<>(); //todo
-		LinkedList<String> path1 = new LinkedList<>();
-		path1.add(nodeA);
-		path1.add(nodeB);
-		expected.add(path1);
-
-		Assertions.assertIterableEquals(expected, result);
+		Assertions.assertIterableEquals(expectedResult, actualResult);
 	}
 
 	@Test
-	void calculatePathsReturnsNoPathsBetweenNodes() throws GraphNullException {
-		String nodeA = "A";
-		String nodeB = "B";
-		String nodeC = "C";
-		String nodeD = "D";
+	void testCalculatePathsReturnsNoPathsBetweenNodes() throws GraphNullException {
+		// Given
+		Graph graph = getGraphWithTwoIsolatedSubGraphs();
 
-		LinkedHashSet<String> adjacentNodesToA = new LinkedHashSet<>();
-		adjacentNodesToA.add(nodeB);
-		LinkedHashSet<String> adjacentNodesToB = new LinkedHashSet<>();
-		adjacentNodesToB.add(nodeA);
+		// When
+		Set<LinkedList<String>> actualResult = underTest.calculatePaths(graph, NODE_A, NODE_D);
 
-		LinkedHashSet<String> adjacentNodesToC = new LinkedHashSet<>();
-		adjacentNodesToC.add(nodeD);
-		LinkedHashSet<String> adjacentNodesToD = new LinkedHashSet<>();
-		adjacentNodesToD.add(nodeC);
-
-
-		Graph graph = new Graph();
-		Map<String, LinkedHashSet<String>> graphMap = new HashMap<>();
-		graphMap.put(nodeA, adjacentNodesToA);
-		graphMap.put(nodeB, adjacentNodesToB);
-		graphMap.put(nodeC, adjacentNodesToC);
-		graphMap.put(nodeD, adjacentNodesToD);
-		graph.setGraph(graphMap);
-
-		Set<LinkedList<String>> result = underTest.calculatePaths(graph, nodeA, nodeD);
-		Set<LinkedList<String>> expected = new HashSet<>();
-
-		Assertions.assertIterableEquals(expected, result);
+		// Then
+		Set<LinkedList<String>> expectedResult = new HashSet<>();
+		Assertions.assertIterableEquals(expectedResult, actualResult);
 	}
 
 	@Test
-	void canCalculatePathsInGraphWithOneNode() throws GraphNullException {
-		String nodeA = "A";
-		LinkedHashSet<String> adjacentNodesToA = new LinkedHashSet<>();
-
-		Graph graph = new Graph();
+	void testCalculatePathsInGraphWithOneNode() throws GraphNullException {
+		// Given
 		Map<String, LinkedHashSet<String>> graphMap = new HashMap<>();
-		graphMap.put(nodeA, adjacentNodesToA);
-		graph.setGraph(graphMap);
+		graphMap.put(NODE_A, new LinkedHashSet<>());
+		Graph graph = new Graph(graphMap);
 
-		Set<LinkedList<String>> result = underTest.calculatePaths(graph, nodeA, nodeA);
-		Set<LinkedList<String>> expected = new HashSet<>();
+		// When
+		Set<LinkedList<String>> actualResult = underTest.calculatePaths(graph, NODE_A, NODE_A);
 
-		Assertions.assertIterableEquals(expected, result);
+		// Then
+		Set<LinkedList<String>> expectedResult = new HashSet<>();
+		Assertions.assertIterableEquals(expectedResult, actualResult);
 	}
 
 	@Test
-	void canCalculatePathsBetweenTwoNodesWhereOneNodeOutOfGraph() throws GraphNullException {
-		String nodeA = "A";
-		String nodeB = "B";
-		LinkedHashSet<String> adjacentNodesToA = new LinkedHashSet<>();
-
-		Graph graph = new Graph();
+	void testCalculatePathsBetweenTwoNodesWhereOneNodeOutOfGraph() throws GraphNullException {
+		// Given
 		Map<String, LinkedHashSet<String>> graphMap = new HashMap<>();
-		graphMap.put(nodeA, adjacentNodesToA);
-		graph.setGraph(graphMap);
+		graphMap.put(NODE_A, new LinkedHashSet<>());
+		Graph graph = new Graph(graphMap);
 
-		Set<LinkedList<String>> result = underTest.calculatePaths(graph, nodeA, nodeB);
-		Set<LinkedList<String>> expected = new HashSet<>();
+		// When
+		Set<LinkedList<String>> actualResult = underTest.calculatePaths(graph, NODE_A, NODE_B);
 
-		Assertions.assertIterableEquals(expected, result);
+		// Then
+		Set<LinkedList<String>> expectedResult = new HashSet<>();
+		Assertions.assertIterableEquals(expectedResult, actualResult);
 	}
 
 	@Test
-	void canCalculatePathsBetweenTwoNodeAndReturnsTwoDifferentPaths() throws GraphNullException {
-		String nodeA = "A";
-		String nodeB = "B";
-		String nodeC = "C";
+	void testCalculatePathsBetweenTwoNodesAndReturnsTwoDifferentPaths() throws GraphNullException {
+		// Given
+		Graph graph = getGraphWithTwoPathsFromAToC();
+		LinkedList<String> firstPath = new LinkedList<>(Arrays.asList(NODE_A, NODE_B, NODE_C));
+		LinkedList<String> secondPath = new LinkedList<>(Arrays.asList(NODE_A, NODE_C));
 
-		LinkedHashSet<String> adjacentNodesToA = new LinkedHashSet<>();
-		adjacentNodesToA.add(nodeB);
-		adjacentNodesToA.add(nodeC);
-		LinkedHashSet<String> adjacentNodesToB = new LinkedHashSet<>();
-		adjacentNodesToB.add(nodeA);
-		adjacentNodesToB.add(nodeC);
-		LinkedHashSet<String> adjacentNodesToC = new LinkedHashSet<>();
-		adjacentNodesToC.add(nodeB);
-		adjacentNodesToC.add(nodeA);
+		// When
+		Set<LinkedList<String>> actualResult = underTest.calculatePaths(graph, NODE_A, NODE_C);
 
-		Graph graph = new Graph();
+		// Then
+		Set<LinkedList<String>> expectedResult = new HashSet<>(Arrays.asList(firstPath, secondPath));
+		Assertions.assertIterableEquals(expectedResult, actualResult);
+	}
+
+	/**
+	 * @return graph where A, B and C nodes are. A is connected to B and C. B is connected to A and C.
+	 * C is connected to B and A.
+	 */
+	private Graph getGraphWithTwoPathsFromAToC() {
+		LinkedHashSet<String> adjacentNodesToA = new LinkedHashSet<>(Arrays.asList(NODE_B, NODE_C));
+		LinkedHashSet<String> adjacentNodesToB = new LinkedHashSet<>(Arrays.asList(NODE_A, NODE_C));
+		LinkedHashSet<String> adjacentNodesToC = new LinkedHashSet<>(Arrays.asList(NODE_B, NODE_A));
+
 		Map<String, LinkedHashSet<String>> graphMap = new HashMap<>();
-		graphMap.put(nodeA, adjacentNodesToA);
-		graphMap.put(nodeB, adjacentNodesToB);
-		graphMap.put(nodeC, adjacentNodesToC);
-		graph.setGraph(graphMap);
+		graphMap.put(NODE_A, adjacentNodesToA);
+		graphMap.put(NODE_B, adjacentNodesToB);
+		graphMap.put(NODE_C, adjacentNodesToC);
+		return new Graph(graphMap);
+	}
 
-		Set<LinkedList<String>> result = underTest.calculatePaths(graph, nodeA, nodeC);
-		Set<LinkedList<String>> expected = new HashSet<>();
-		LinkedList<String> firstPath = new LinkedList<>();
-		firstPath.add(nodeA);
-		firstPath.add(nodeB);
-		firstPath.add(nodeC);
-		LinkedList<String> secondPath = new LinkedList<>();
-		secondPath.add(nodeA);
-		secondPath.add(nodeC);
-		expected.add(firstPath);
-		expected.add(secondPath);
+	/**
+	 * @return graph where A and B nodes isolated from D and C nodes.
+	 */
+	private Graph getGraphWithTwoIsolatedSubGraphs() {
+		LinkedHashSet<String> adjacentNodesToA = new LinkedHashSet<>(Arrays.asList(NODE_B));
+		LinkedHashSet<String> adjacentNodesToB = new LinkedHashSet<>(Arrays.asList(NODE_A));
+		LinkedHashSet<String> adjacentNodesToC = new LinkedHashSet<>(Arrays.asList(NODE_D));
+		LinkedHashSet<String> adjacentNodesToD = new LinkedHashSet<>(Arrays.asList(NODE_C));
 
-		Assertions.assertIterableEquals(expected, result);
+		Map<String, LinkedHashSet<String>> graphMap = new HashMap<>();
+		graphMap.put(NODE_A, adjacentNodesToA);
+		graphMap.put(NODE_B, adjacentNodesToB);
+		graphMap.put(NODE_C, adjacentNodesToC);
+		graphMap.put(NODE_D, adjacentNodesToD);
+		return new Graph(graphMap);
+	}
+
+	/**
+	 * @return graph with A and B connected Nodes.
+	 */
+	private Graph getGraphWithTwoConnectedNodes() {
+		LinkedHashSet<String> adjacentNodesToA = new LinkedHashSet<>(Arrays.asList(NODE_B));
+		LinkedHashSet<String> adjacentNodesToB = new LinkedHashSet<>(Arrays.asList(NODE_A));
+
+		Map<String, LinkedHashSet<String>> graphMap = new HashMap<>();
+		graphMap.put(NODE_A, adjacentNodesToA);
+		graphMap.put(NODE_B, adjacentNodesToB);
+		return new Graph(graphMap);
 	}
 }
