@@ -34,8 +34,7 @@ class CitySpringDataServiceTest {
 	@Test
 	void testSave() {
 		// Given
-		City city = new City();
-		city.setName(CITY_NAME_NEW_YORK);
+		City city = new City(CITY_NAME_NEW_YORK);
 
 		// When
 		citySpringDataService.save(city);
@@ -59,8 +58,7 @@ class CitySpringDataServiceTest {
 	@Test
 	void testFindByName() throws CityNotFoundException {
 		// Given
-		City city = new City();
-		city.setName(CITY_NAME_NEW_YORK);
+		City city = new City(CITY_NAME_NEW_YORK);
 		Mockito.doReturn(Optional.of(city)).when(cityRepository).findByName(ArgumentMatchers.any());
 
 		// When
