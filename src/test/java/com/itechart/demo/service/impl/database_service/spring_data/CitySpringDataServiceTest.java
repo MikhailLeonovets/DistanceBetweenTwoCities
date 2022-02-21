@@ -21,21 +21,26 @@ import java.util.Optional;
 class CitySpringDataServiceTest {
 	@Mock
 	private CityRepository cityRepository;
-	private CitySpringDataService underTest;
+	private CitySpringDataService citySpringDataService;
 
 	private static final String CITY_NAME_NEW_YORK = "New York";
 	private static final Long CITY_ID = 1L;
 
 	@BeforeEach
 	void setUp() {
-		underTest = new CitySpringDataService(cityRepository);
+		citySpringDataService = new CitySpringDataService(cityRepository);
 	}
 
 	@Test
 	void testSave() {
+		// Given
 		City city = new City();
 		city.setName(CITY_NAME_NEW_YORK);
-		underTest.save(city);
+
+		// When
+		citySpringDataService.save(city);
+
+		// Then
 		ArgumentCaptor<City> cityArgumentCaptor = ArgumentCaptor.forClass(City.class);
 		Mockito.verify(cityRepository).save(cityArgumentCaptor.capture());
 		City capturedCity = cityArgumentCaptor.getValue();
@@ -44,61 +49,92 @@ class CitySpringDataServiceTest {
 
 	@Test
 	void testFindAll() {
-		underTest.findAll();
+		// When
+		citySpringDataService.findAll();
+
+		// Then
 		Mockito.verify(cityRepository).findAll();
 	}
 
 	@Test
 	void testFindByName() throws CityNotFoundException {
+		// Given
 		City city = new City();
 		city.setName(CITY_NAME_NEW_YORK);
 		Mockito.doReturn(Optional.of(city)).when(cityRepository).findByName(ArgumentMatchers.any());
-		City returnedCity = underTest.findByName(CITY_NAME_NEW_YORK);
+
+		// When
+		City returnedCity = citySpringDataService.findByName(CITY_NAME_NEW_YORK);
+
+		// Then
 		Mockito.verify(cityRepository).findByName(ArgumentMatchers.eq(CITY_NAME_NEW_YORK));
 		Assertions.assertNotNull(returnedCity);
 	}
 
 	@Test
 	void testFindByNameThrowsCityNotFoundException() {
+		// Given
 		Mockito.doReturn(Optional.empty()).when(cityRepository).findByName(ArgumentMatchers.any());
-		AssertionsForClassTypes.assertThatThrownBy(() -> underTest.findByName(CITY_NAME_NEW_YORK))
-				.isInstanceOf(CityNotFoundException.class);
+
+		// When and Then
+		Assertions.assertThrows(CityNotFoundException.class,
+				() -> citySpringDataService.findByName(CITY_NAME_NEW_YORK));
 	}
 
 	@Test
 	void testFindById() throws CityNotFoundException {
+		// Given
 		City city = new City();
 		city.setId(CITY_ID);
 		Mockito.doReturn(Optional.of(city)).when(cityRepository).findById(ArgumentMatchers.any());
-		City returnedCity = underTest.findById(CITY_ID);
+
+		// When
+		City returnedCity = citySpringDataService.findById(CITY_ID);
+
+		// Then
 		Mockito.verify(cityRepository).findById(ArgumentMatchers.eq(CITY_ID));
 		Assertions.assertNotNull(returnedCity);
 	}
 
 	@Test
 	void testFindByIdThrowsCityNotFoundException() {
+		// Given
 		BDDMockito.given(cityRepository.findById(CITY_ID)).willReturn(Optional.empty());
-		AssertionsForClassTypes.assertThatThrownBy(() -> underTest.findById(CITY_ID))
-				.isInstanceOf(CityNotFoundException.class);
+
+		//When and Then
+		Assertions.assertThrows(CityNotFoundException.class, () -> citySpringDataService.findById(CITY_ID));
 	}
 
 	@Test
 	void testUpdate() {
+		// Given
 		City city = new City();
-		underTest.update(city);
+
+		// When
+		citySpringDataService.update(city);
+
+		// Then
 		Mockito.verify(cityRepository).save(city);
 	}
 
 	@Test
 	void testDeleteById() {
-		underTest.deleteById(CITY_ID);
+		// When
+		citySpringDataService.deleteById(CITY_ID);
+
+		// Then
 		Mockito.verify(cityRepository).deleteById(CITY_ID);
 	}
 
 	@Test
 	void testDelete() {
+		// Given
 		City city = new City();
-		underTest.delete(city);
+
+		// When
+		citySpringDataService.delete(city);
+
+		// Then
 		Mockito.verify(cityRepository).delete(city);
 	}
 }
