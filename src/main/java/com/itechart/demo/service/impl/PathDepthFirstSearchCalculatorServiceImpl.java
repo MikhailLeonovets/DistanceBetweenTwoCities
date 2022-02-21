@@ -16,17 +16,17 @@ public class PathDepthFirstSearchCalculatorServiceImpl implements PathDepthFirst
 	}
 
 	@Override
-	public Set<LinkedList<String>> calculatePaths(Graph graph, String beginNode, String endNode)
+	public Set<LinkedList<String>> calculatePaths(Graph graph, String startNode, String endNode)
 			throws GraphNullException {
 		if (graph == null
-				|| beginNode == null
+				|| startNode == null
 				|| endNode == null) {
 			throw new GraphNullException();
 		}
 		//if empty todo
 		Set<LinkedList<String>> paths = new HashSet<>();
 		LinkedList<String> visited = new LinkedList<>();
-		visited.add(beginNode);
+		visited.add(startNode);
 		depthFirstSearch(graph, visited, endNode, paths);
 		return paths;
 	}
