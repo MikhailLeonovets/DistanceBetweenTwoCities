@@ -24,11 +24,10 @@ class CityRepositoryTest {
 	}
 
 	@Test
-	void itShouldReturnCity() {
+	void testSave() {
 		// Given
 		String cityName = "New York";
-		City city = new City();
-		city.setName(cityName);
+		City city = new City(cityName);
 
 		// When
 		cityRepository.save(city);

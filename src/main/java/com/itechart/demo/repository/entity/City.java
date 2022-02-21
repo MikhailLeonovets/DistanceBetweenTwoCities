@@ -18,13 +18,19 @@ import java.util.Objects;
 @ToString
 @Entity
 @Table(name = "city")
-@NoArgsConstructor
 public class City extends Identity implements Serializable {
 	@Column(name = "name", nullable = false)
 	private String name;
 
 	@Version
 	private Long version;
+
+	public City() {
+	}
+
+	public City(String name) {
+		this.name = name;
+	}
 
 	@Override
 	public boolean equals(Object o) {

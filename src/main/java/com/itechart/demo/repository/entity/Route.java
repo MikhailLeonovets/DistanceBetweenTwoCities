@@ -18,7 +18,6 @@ import javax.persistence.Version;
 import java.io.Serializable;
 import java.util.Objects;
 
-@NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
@@ -41,6 +40,16 @@ public class Route extends Identity implements Serializable {
 
 	@Version
 	private Long version;
+
+	public Route() {
+
+	}
+
+	public Route(City firstCity, City secondCity, Float distance) {
+		this.firstCity = firstCity;
+		this.secondCity = secondCity;
+		this.distance = distance;
+	}
 
 	@Override
 	public boolean equals(Object o) {

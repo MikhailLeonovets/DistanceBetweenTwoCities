@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,7 +26,7 @@ class RouteRepositoryTest {
 	private static final String CITY_NAME_NEW_YORK = "New York";
 	private static final String CITY_NAME_LA = "LA";
 
-	private static final Float DISTANCE = 23F;
+	private static final Float DISTANCE = 25F;
 
 	@AfterEach
 	void tearDown() {
@@ -34,11 +35,10 @@ class RouteRepositoryTest {
 	}
 
 	@Test
-	void findNoRoutesByFirstCity() {
+	void testFindRoutesByFirstCityReturnsNothing() {
 		// Given
-		City city = new City();
-		city.setName(CITY_NAME_NEW_YORK);
-		city = cityRepository.save(city);
+		City city = new City(CITY_NAME_NEW_YORK);
+		saveCitiesToDatabase(Arrays.asList(city));
 
 		// When
 		List<Route> routeList = routeRepository.findRoutesByFirstCity(city);
@@ -48,22 +48,12 @@ class RouteRepositoryTest {
 	}
 
 	@Test
-	void findOneRouteByFirstCity() {
+	void testFindRoutesByFirstCityReturnsOneRoute() {
 		// Given
-		City firstCity = new City();
-		firstCity.setName(CITY_NAME_NEW_YORK);
-
-		City secondCity = new City();
-		secondCity.setName(CITY_NAME_LA);
-
-		firstCity = cityRepository.save(firstCity);
-		secondCity = cityRepository.save(secondCity);
-
-		Route route = new Route();
-		route.setFirstCity(firstCity);
-		route.setSecondCity(secondCity);
-		route.setDistance(DISTANCE);
-		routeRepository.save(route);
+		City firstCity = new City(CITY_NAME_NEW_YORK);
+		City secondCity = new City(CITY_NAME_LA);
+		saveCitiesToDatabase(Arrays.asList(firstCity, secondCity));
+		routeRepository.save(new Route(firstCity, secondCity, DISTANCE));
 
 		// When
 		List<Route> routeList = routeRepository.findRoutesByFirstCity(firstCity);
@@ -74,16 +64,11 @@ class RouteRepositoryTest {
 	}
 
 	@Test
-	void findNoRouteBetweenTwoCities() {
+	void testFindRouteBetweenTwoCitiesReturnsNothing() {
 		// Given
-		City firstCity = new City();
-		firstCity.setName(CITY_NAME_NEW_YORK);
-
-		City secondCity = new City();
-		secondCity.setName(CITY_NAME_LA);
-
-		firstCity = cityRepository.save(firstCity);
-		secondCity = cityRepository.save(secondCity);
+		City firstCity = new City(CITY_NAME_NEW_YORK);
+		City secondCity = new City(CITY_NAME_LA);
+		saveCitiesToDatabase(Arrays.asList(firstCity, secondCity));
 
 		// When
 		Optional<Route> optionalRoute
@@ -94,22 +79,12 @@ class RouteRepositoryTest {
 	}
 
 	@Test
-	void findRouteBetweenTwoCities() {
+	void testFindRouteBetweenTwoCities() {
 		// Given
-		City firstCity = new City();
-		firstCity.setName(CITY_NAME_NEW_YORK);
-
-		City secondCity = new City();
-		secondCity.setName(CITY_NAME_LA);
-
-		firstCity = cityRepository.save(firstCity);
-		secondCity = cityRepository.save(secondCity);
-
-		Route route = new Route();
-		route.setFirstCity(firstCity);
-		route.setSecondCity(secondCity);
-		route.setDistance(25f);
-		routeRepository.save(route);
+		City firstCity = new City(CITY_NAME_NEW_YORK);
+		City secondCity = new City(CITY_NAME_LA);
+		saveCitiesToDatabase(Arrays.asList(firstCity, secondCity));
+		routeRepository.save(new Route(firstCity, secondCity, DISTANCE));
 
 		// When
 		Optional<Route> optionalRoute
@@ -117,5 +92,9 @@ class RouteRepositoryTest {
 
 		// Then
 		assertThat(optionalRoute.isPresent()).isTrue();
+	}
+
+	private void saveCitiesToDatabase(List<City> cities) {
+		cities.forEach(cityRepository::save);
 	}
 }
