@@ -32,6 +32,11 @@ public class City extends Identity implements Serializable {
 		this.name = name;
 	}
 
+	public City(Long id, String name) {
+		super.setId(id);
+		this.name = name;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;

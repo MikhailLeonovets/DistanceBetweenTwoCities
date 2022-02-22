@@ -19,17 +19,12 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.runner.RunWith;
-import org.mockito.Answers;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.stubbing.Answer;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,10 +34,7 @@ import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class PathServiceImplTest {
@@ -54,6 +46,14 @@ class PathServiceImplTest {
 	private CityService cityService;
 	@Mock
 	private CitiesAndRoutesToGraphConverter citiesAndRoutesToGraphConverter;
+
+	private static final String CITY_NAME_A = "A";
+	private static final String CITY_NAME_B = "B";
+	private static final String CITY_NAME_C = "C";
+	private static final Long ID_1 = 1L;
+	private static final Long ID_2 = 2L;
+	private static final Long ID_3 = 3L;
+	private static final Float DISTANCE = 10F;
 
 	private PathServiceImpl underTest;
 
@@ -71,112 +71,40 @@ class PathServiceImplTest {
 	}
 
 	@Test
-	void canGetMultiPaths() throws GraphNullException, PathNotFoundException, RouteNotFoundException,
+	void testGetPathsReturnsTwoPaths() throws GraphNullException, PathNotFoundException, RouteNotFoundException,
 			CityNotFoundException, EmptyInputException {
-		String nodeA = "A";
-		String nodeB = "B";
-		String nodeC = "C";
-
-		Long cityAid = 1L;
-		Long cityBid = 2L;
-		Long cityCid = 3L;
-
-		City cityA = new City();
-		cityA.setName(nodeA);
-		cityA.setId(cityAid);
-		City cityB = new City();
-		cityB.setName(nodeB);
-		cityB.setId(cityBid);
-		City cityC = new City();
-		cityC.setName(nodeC);
-		cityC.setId(cityCid);
-
+		// Given
+		City cityA = new City(ID_1, CITY_NAME_A);
+		City cityB = new City(ID_2, CITY_NAME_B);
+		City cityC = new City(ID_3, CITY_NAME_C);
 		List<City> cities = new ArrayList<>(Arrays.asList(cityA, cityB, cityC));
-
-		Route routeAC = new Route();
-		routeAC.setFirstCity(cityA);
-		routeAC.setSecondCity(cityC);
-		routeAC.setDistance(10F);
-
-		Route routeAB = new Route();
-		routeAB.setFirstCity(cityA);
-		routeAB.setSecondCity(cityB);
-		routeAB.setDistance(10F);
-
-		Route routeBC = new Route();
-		routeBC.setFirstCity(cityB);
-		routeBC.setSecondCity(cityC);
-		routeBC.setDistance(10F);
-
-		List<Route> routes = new ArrayList<>(Arrays.asList(routeAB, routeAC, routeBC));
-
+		List<Route> routes = getRoutesFromThreeCities(cityA, cityB, cityC);
 		Mockito.doReturn(cities).when(cityService).findAll();
 		Mockito.doReturn(routes).when(routeService).findAll();
-
-		LinkedHashSet<String> adjacentNodesToA = new LinkedHashSet<>();
-		adjacentNodesToA.add(nodeB);
-		adjacentNodesToA.add(nodeC);
-		LinkedHashSet<String> adjacentNodesToB = new LinkedHashSet<>();
-		adjacentNodesToB.add(nodeA);
-		adjacentNodesToB.add(nodeC);
-		LinkedHashSet<String> adjacentNodesToC = new LinkedHashSet<>();
-		adjacentNodesToC.add(nodeB);
-		adjacentNodesToC.add(nodeA);
-
-		Graph graph = new Graph();
-		Map<String, LinkedHashSet<String>> graphMap = new HashMap<>();
-		graphMap.put(nodeA, adjacentNodesToA);
-		graphMap.put(nodeB, adjacentNodesToB);
-		graphMap.put(nodeC, adjacentNodesToC);
-		graph.setGraph(graphMap);
+		Graph graph = getGraphWithThreeCities();
 		Mockito.doReturn(graph).when(citiesAndRoutesToGraphConverter)
 				.convert(ArgumentMatchers.any(), ArgumentMatchers.any());
-
-		Set<LinkedList<String>> stringPaths = new HashSet<>();
-		LinkedList<String> firstStringPath = new LinkedList<>();
-		firstStringPath.add(nodeA);
-		firstStringPath.add(nodeB);
-		firstStringPath.add(nodeC);
-		LinkedList<String> secondStringPath = new LinkedList<>();
-		secondStringPath.add(nodeA);
-		secondStringPath.add(nodeC);
-		stringPaths.add(firstStringPath);
-		stringPaths.add(secondStringPath);
-
+		Set<LinkedList<String>> stringPaths = getStringPathsForTestGetPathsReturnsTwoPaths();
 		Mockito.doReturn(stringPaths).when(pathDepthFirstSearchCalculatorService)
 				.calculatePaths(graph, cityA.getName(), cityC.getName());
 
-		Path firstPath = new Path();
-		Set<Route> firstRoutesPath = new HashSet<>();
-		firstRoutesPath.add(routeAB);
-		firstRoutesPath.add(routeBC);
-		firstPath.setRoutesToEndPoint(firstRoutesPath);
-		firstPath.setTotalDistance(20F);
-
-		Path secondPath = new Path();
-		Set<Route> secondRoutesPath = new HashSet<>();
-		secondRoutesPath.add(routeAC);
-		secondPath.setRoutesToEndPoint(secondRoutesPath);
-		secondPath.setTotalDistance(10F);
-
-		Set<Path> expected = new HashSet<>();
-		expected.add(secondPath);
-		expected.add(firstPath);
-
 		Answer<Route> answerGetRouteBetweenTwoCities = invocationOnMock -> {
-			City firstCity = invocationOnMock.getArgument(0, City.class);
-			City secondCity = invocationOnMock.getArgument(1, City.class);
+			int firstCityArgNumber = 0;
+			int secondCityArgNumber = 1;
+			City firstCity = invocationOnMock.getArgument(firstCityArgNumber, City.class);
+			City secondCity = invocationOnMock.getArgument(secondCityArgNumber, City.class);
 			return routes.stream().filter(route -> route.getFirstCity().equals(firstCity)
 					&& route.getSecondCity().equals(secondCity)).findAny().get();
 		};
-
 		Answer<City> answerGetCityByName = invocationOnMock -> {
-			String cityName = invocationOnMock.getArgument(0, String.class);
+			int cityNameArgNumber = 0;
+			String cityName = invocationOnMock.getArgument(cityNameArgNumber, String.class);
 			return cities.stream().filter(city -> city.getName().equals(cityName)).findAny().get();
 		};
 
 		Answer<City> answerGetCityById = invocationOnMock -> {
-			Long arg = invocationOnMock.getArgument(0, Long.class);
+			int idArgNumber = 0;
+			Long arg = invocationOnMock.getArgument(idArgNumber, Long.class);
 			return cities.stream().filter(city -> city.getId().equals(arg)).findAny().get();
 		};
 		Mockito.when(cityService.findById(ArgumentMatchers.any())).thenAnswer(answerGetCityById);
@@ -185,48 +113,94 @@ class PathServiceImplTest {
 						ArgumentMatchers.any(City.class)))
 				.thenAnswer(answerGetRouteBetweenTwoCities);
 
-		Set<Path> result = underTest.getPaths(cityAid, cityCid);
+		// When
+		Set<Path> actualResult = underTest.getPaths(ID_1, ID_3);
 
+		// Then
+		Set<Path> expectedResult = getPathsFromRoutesForTestGetPathsReturnsTwoPaths(routes);
 		Mockito.verify(cityService).findById(cityA.getId());
 		Mockito.verify(cityService).findById(cityC.getId());
 		Mockito.verify(pathDepthFirstSearchCalculatorService).calculatePaths(graph, cityA.getName(), cityC.getName());
-
-		Assertions.assertIterableEquals(expected, result);
+		Assertions.assertIterableEquals(expectedResult, actualResult);
 	}
 
 	@Test
-	void getPathsThrowsPathNotFoundException() throws GraphNullException, PathNotFoundException, CityNotFoundException, EmptyInputException {
-		City firstCity = new City();
-		Long firstCityId = 1L;
-		String firstCityName = "London";
-		firstCity.setId(firstCityId);
-		firstCity.setName(firstCityName);
-
-		City secondCity = new City();
-		Long secondCityId = 2L;
-		String secondCityName = "New York";
-		secondCity.setId(secondCityId);
-		secondCity.setName(secondCityName);
-
+	void getPathsThrowsPathNotFoundException() throws GraphNullException, PathNotFoundException, CityNotFoundException,
+			EmptyInputException {
+		// Given
+		City firstCity = new City(ID_1, CITY_NAME_A);
+		City secondCity = new City(ID_2, CITY_NAME_B);
 		List<City> cities = new ArrayList<>(Arrays.asList(firstCity, secondCity));
 		List<Route> routes = new ArrayList<>();
 
 		Mockito.doReturn(cities).when(cityService).findAll();
 		Mockito.doReturn(routes).when(routeService).findAll();
-
 		Set<LinkedList<String>> stringPaths = new HashSet<>();
 
 		Answer<City> answerGetCityById = invocationOnMock -> {
 			Long arg = invocationOnMock.getArgument(0, Long.class);
 			return cities.stream().filter(city -> city.getId().equals(arg)).findAny().get();
 		};
-
 		Mockito.when(cityService.findById(ArgumentMatchers.any())).thenAnswer(answerGetCityById);
-
 		Mockito.doReturn(stringPaths).when(pathDepthFirstSearchCalculatorService)
 				.calculatePaths(ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any());
 
-		AssertionsForClassTypes.assertThatThrownBy(() -> underTest.getPaths(firstCity.getId(), secondCity.getId()))
-				.isInstanceOf(PathNotFoundException.class);
+		// When
+		// Then
+		Assertions.assertThrows(PathNotFoundException.class,
+				() -> underTest.getPaths(firstCity.getId(), secondCity.getId()));
+	}
+
+	/**
+	 * @return List of Routes. Routes are generated for Graph with these Cities where might be two different paths
+	 * from City A to City C.
+	 */
+	private List<Route> getRoutesFromThreeCities(City cityA, City cityB, City cityC) {
+		Route routeAC = new Route(cityA, cityC, DISTANCE);
+		Route routeAB = new Route(cityA, cityB, DISTANCE);
+		Route routeBC = new Route(cityB, cityC, DISTANCE);
+		return new ArrayList<>(Arrays.asList(routeAB, routeAC, routeBC));
+	}
+
+	/**
+	 * @return graph where city A, city B and city C. City A is connected to City B and City C.
+	 * City B is connected to City A and City C. City C is connected to City A and City B.
+	 */
+	private Graph getGraphWithThreeCities() {
+		LinkedHashSet<String> adjacentNodesToA = new LinkedHashSet<>(Arrays.asList(CITY_NAME_B, CITY_NAME_C));
+		LinkedHashSet<String> adjacentNodesToB = new LinkedHashSet<>(Arrays.asList(CITY_NAME_A, CITY_NAME_C));
+		LinkedHashSet<String> adjacentNodesToC = new LinkedHashSet<>(Arrays.asList(CITY_NAME_B, CITY_NAME_A));
+
+		Map<String, LinkedHashSet<String>> graphMap = new HashMap<>();
+		graphMap.put(CITY_NAME_A, adjacentNodesToA);
+		graphMap.put(CITY_NAME_B, adjacentNodesToB);
+		graphMap.put(CITY_NAME_C, adjacentNodesToC);
+		return new Graph(graphMap);
+	}
+
+	/**
+	 * @return Set<LinkedList < String>> string paths for expected result from test testGetPathsReturnsTwoPaths().
+	 */
+	private Set<LinkedList<String>> getStringPathsForTestGetPathsReturnsTwoPaths() {
+		LinkedList<String> firstStringPath = new LinkedList<>(Arrays.asList(CITY_NAME_A, CITY_NAME_B, CITY_NAME_C));
+		LinkedList<String> secondStringPath = new LinkedList<>(Arrays.asList(CITY_NAME_A, CITY_NAME_C));
+		return new HashSet<>(Arrays.asList(firstStringPath, secondStringPath));
+	}
+
+	/**
+	 * @param routes are to be added to Paths.
+	 * @return Set<Path> for expected result of paths for testGetPathsReturnsTwoPaths().
+	 */
+	private Set<Path> getPathsFromRoutesForTestGetPathsReturnsTwoPaths(List<Route> routes) {
+		Path firstPath = new Path();
+		firstPath.setRoutesToEndPoint(new HashSet<>(Arrays.asList(routes.get(0), routes.get(2))));
+		Float totalDistancePathOne = 20F;
+		firstPath.setTotalDistance(totalDistancePathOne);
+
+		Path secondPath = new Path();
+		secondPath.setRoutesToEndPoint(new HashSet<>(Arrays.asList(routes.get(1))));
+		Float totalDistancePathTwo = 10F;
+		secondPath.setTotalDistance(totalDistancePathTwo);
+		return new HashSet<>(Arrays.asList(firstPath, secondPath));
 	}
 }
