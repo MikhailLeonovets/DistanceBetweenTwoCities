@@ -7,8 +7,7 @@ import com.itechart.demo.service.PathDepthFirstSearchCalculatorService;
 import com.itechart.demo.service.RouteService;
 import com.itechart.demo.service.converter.CitiesAndRoutesToGraphConverter;
 import com.itechart.demo.service.exception.CityNotFoundException;
-import com.itechart.demo.service.exception.EmptyInputException;
-import com.itechart.demo.service.exception.GraphNullException;
+import com.itechart.demo.service.exception.DataInputException;
 import com.itechart.demo.service.exception.PathNotFoundException;
 import com.itechart.demo.service.exception.RouteNotFoundException;
 import com.itechart.demo.service.model.Graph;
@@ -23,7 +22,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.stubbing.Answer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -69,8 +67,8 @@ class PathServiceImplTest {
 	}
 
 	@Test
-	void testGetPathsReturnsTwoPaths() throws GraphNullException, PathNotFoundException, RouteNotFoundException,
-			CityNotFoundException, EmptyInputException {
+	void testGetPathsReturnsTwoPaths() throws PathNotFoundException, RouteNotFoundException,
+			CityNotFoundException, DataInputException {
 		// Given
 		City cityA = new City(ID_1, CITY_NAME_A);
 		City cityB = new City(ID_2, CITY_NAME_B);
@@ -106,8 +104,8 @@ class PathServiceImplTest {
 	}
 
 	@Test
-	void getPathsThrowsPathNotFoundException() throws GraphNullException, PathNotFoundException, CityNotFoundException,
-			EmptyInputException {
+	void getPathsThrowsPathNotFoundException() throws PathNotFoundException, CityNotFoundException,
+			DataInputException {
 		// Given
 		City firstCity = new City(ID_1, CITY_NAME_A);
 		City secondCity = new City(ID_2, CITY_NAME_B);

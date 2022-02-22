@@ -1,7 +1,6 @@
 package com.itechart.demo.service.impl;
 
-import com.itechart.demo.service.exception.EmptyInputException;
-import com.itechart.demo.service.exception.GraphNullException;
+import com.itechart.demo.service.exception.DataInputException;
 import com.itechart.demo.service.model.Graph;
 import com.itechart.demo.service.PathDepthFirstSearchCalculatorService;
 import org.springframework.stereotype.Service;
@@ -18,16 +17,14 @@ public class PathDepthFirstSearchCalculatorServiceImpl implements PathDepthFirst
 
 	@Override
 	public Set<LinkedList<String>> calculatePaths(Graph graph, String startNode, String endNode)
-			throws GraphNullException, EmptyInputException {
+			throws DataInputException {
 		if (graph == null
 				|| startNode == null
-				|| endNode == null) {
-			throw new GraphNullException();
-		}
-		if (graph.getGraph().isEmpty()
+				|| endNode == null
+				|| graph.getGraph().isEmpty()
 				|| startNode.isEmpty()
 				|| endNode.isEmpty()) {
-			throw new EmptyInputException();
+			throw new DataInputException();
 		}
 		Set<LinkedList<String>> paths = new HashSet<>();
 		LinkedList<String> visited = new LinkedList<>();
