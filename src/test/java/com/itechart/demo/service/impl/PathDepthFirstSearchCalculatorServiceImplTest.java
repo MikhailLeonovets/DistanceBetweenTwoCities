@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.Set;
 
 class PathDepthFirstSearchCalculatorServiceImplTest {
-	private PathDepthFirstSearchCalculatorServiceImpl underTest;
+	private PathDepthFirstSearchCalculatorServiceImpl pathDepthFirstSearchCalculatorService;
 
 	private static final String NODE_A = "A";
 	private static final String NODE_B = "B";
@@ -25,7 +25,20 @@ class PathDepthFirstSearchCalculatorServiceImplTest {
 
 	@BeforeEach
 	void setUp() {
-		underTest = new PathDepthFirstSearchCalculatorServiceImpl();
+		pathDepthFirstSearchCalculatorService = new PathDepthFirstSearchCalculatorServiceImpl();
+	}
+
+	@Test
+	void testCalculatePathsThrowsGraphNullExceptionBecauseGraphAndStartNodeAndEndNodeAreNull() {
+		// Given
+		Graph graph = null;
+		String startNode = null;
+		String endNode = null;
+
+		// When
+		// Then
+		Assertions.assertThrows(GraphNullException.class,
+				() -> pathDepthFirstSearchCalculatorService.calculatePaths(graph, startNode, endNode));
 	}
 
 	@Test
@@ -37,7 +50,8 @@ class PathDepthFirstSearchCalculatorServiceImplTest {
 
 		// When
 		// Then
-		Assertions.assertThrows(GraphNullException.class, () -> underTest.calculatePaths(graph, startNode, endNode));
+		Assertions.assertThrows(GraphNullException.class,
+				() -> pathDepthFirstSearchCalculatorService.calculatePaths(graph, startNode, endNode));
 	}
 
 	@Test
@@ -49,7 +63,8 @@ class PathDepthFirstSearchCalculatorServiceImplTest {
 
 		// When
 		// Then
-		Assertions.assertThrows(GraphNullException.class, () -> underTest.calculatePaths(graph, startNode, endNode));
+		Assertions.assertThrows(GraphNullException.class,
+				() -> pathDepthFirstSearchCalculatorService.calculatePaths(graph, startNode, endNode));
 	}
 
 	@Test
@@ -61,7 +76,8 @@ class PathDepthFirstSearchCalculatorServiceImplTest {
 
 		// When
 		// Then
-		Assertions.assertThrows(GraphNullException.class, () -> underTest.calculatePaths(graph, startNode, endNode));
+		Assertions.assertThrows(GraphNullException.class,
+				() -> pathDepthFirstSearchCalculatorService.calculatePaths(graph, startNode, endNode));
 	}
 
 	@Test
@@ -73,7 +89,8 @@ class PathDepthFirstSearchCalculatorServiceImplTest {
 
 		// When
 		// Then
-		Assertions.assertThrows(GraphNullException.class, () -> underTest.calculatePaths(graph, startNode, endNode));
+		Assertions.assertThrows(GraphNullException.class,
+				() -> pathDepthFirstSearchCalculatorService.calculatePaths(graph, startNode, endNode));
 	}
 
 	@Test
@@ -85,7 +102,8 @@ class PathDepthFirstSearchCalculatorServiceImplTest {
 
 		// When
 		// Then
-		Assertions.assertThrows(GraphNullException.class, () -> underTest.calculatePaths(graph, startNode, endNode));
+		Assertions.assertThrows(GraphNullException.class,
+				() -> pathDepthFirstSearchCalculatorService.calculatePaths(graph, startNode, endNode));
 	}
 
 	@Test
@@ -97,7 +115,21 @@ class PathDepthFirstSearchCalculatorServiceImplTest {
 
 		// When
 		// Then
-		Assertions.assertThrows(GraphNullException.class, () -> underTest.calculatePaths(graph, startNode, endNode));
+		Assertions.assertThrows(GraphNullException.class,
+				() -> pathDepthFirstSearchCalculatorService.calculatePaths(graph, startNode, endNode));
+	}
+
+	@Test
+	void testCalculatePathsThrowsEmptyInputExceptionBecauseGraphAndStartNodeAndEndNodeAreEmpty() {
+		// Given
+		Graph graph = new Graph(new HashMap<>());
+		String startNode = "";
+		String endNode = "";
+
+		// When
+		// Then
+		Assertions.assertThrows(EmptyInputException.class,
+				() -> pathDepthFirstSearchCalculatorService.calculatePaths(graph, startNode, endNode));
 	}
 
 	@Test
@@ -109,7 +141,8 @@ class PathDepthFirstSearchCalculatorServiceImplTest {
 
 		// When
 		// Then
-		Assertions.assertThrows(EmptyInputException.class, () -> underTest.calculatePaths(graph, startNode, endNode));
+		Assertions.assertThrows(EmptyInputException.class,
+				() -> pathDepthFirstSearchCalculatorService.calculatePaths(graph, startNode, endNode));
 	}
 
 	@Test
@@ -121,7 +154,8 @@ class PathDepthFirstSearchCalculatorServiceImplTest {
 
 		// When
 		// Then
-		Assertions.assertThrows(EmptyInputException.class, () -> underTest.calculatePaths(graph, startNode, endNode));
+		Assertions.assertThrows(EmptyInputException.class,
+				() -> pathDepthFirstSearchCalculatorService.calculatePaths(graph, startNode, endNode));
 	}
 
 	@Test
@@ -133,7 +167,8 @@ class PathDepthFirstSearchCalculatorServiceImplTest {
 
 		// When
 		// Then
-		Assertions.assertThrows(EmptyInputException.class, () -> underTest.calculatePaths(graph, startNode, endNode));
+		Assertions.assertThrows(EmptyInputException.class,
+				() -> pathDepthFirstSearchCalculatorService.calculatePaths(graph, startNode, endNode));
 	}
 
 	@Test
@@ -145,7 +180,8 @@ class PathDepthFirstSearchCalculatorServiceImplTest {
 
 		// When
 		// Then
-		Assertions.assertThrows(EmptyInputException.class, () -> underTest.calculatePaths(graph, startNode, endNode));
+		Assertions.assertThrows(EmptyInputException.class,
+				() -> pathDepthFirstSearchCalculatorService.calculatePaths(graph, startNode, endNode));
 	}
 
 	@Test
@@ -157,7 +193,8 @@ class PathDepthFirstSearchCalculatorServiceImplTest {
 
 		// When
 		// Then
-		Assertions.assertThrows(EmptyInputException.class, () -> underTest.calculatePaths(graph, startNode, endNode));
+		Assertions.assertThrows(EmptyInputException.class,
+				() -> pathDepthFirstSearchCalculatorService.calculatePaths(graph, startNode, endNode));
 	}
 
 	@Test
@@ -169,22 +206,23 @@ class PathDepthFirstSearchCalculatorServiceImplTest {
 
 		// When
 		// Then
-		Assertions.assertThrows(EmptyInputException.class, () -> underTest.calculatePaths(graph, startNode, endNode));
+		Assertions.assertThrows(EmptyInputException.class,
+				() -> pathDepthFirstSearchCalculatorService.calculatePaths(graph, startNode, endNode));
 	}
 
 	@Test
 	void testCalculatePathsWithTwoConnectedNodes() throws GraphNullException, EmptyInputException {
 		// Given
 		Graph graph = getGraphWithTwoConnectedNodes();
-
-		// When
-		Set<LinkedList<String>> actualResult = underTest.calculatePaths(graph, NODE_A, NODE_B);
-
-		// Then
 		Set<LinkedList<String>> expectedResult = new HashSet<>();
 		LinkedList<String> path1 = new LinkedList<>(Arrays.asList(NODE_A, NODE_B));
 		expectedResult.add(path1);
 
+		// When
+		Set<LinkedList<String>> actualResult =
+				pathDepthFirstSearchCalculatorService.calculatePaths(graph, NODE_A, NODE_B);
+
+		// Then
 		Assertions.assertIterableEquals(expectedResult, actualResult);
 	}
 
@@ -192,12 +230,13 @@ class PathDepthFirstSearchCalculatorServiceImplTest {
 	void testCalculatePathsReturnsNoPathsBetweenNodes() throws GraphNullException, EmptyInputException {
 		// Given
 		Graph graph = getGraphWithTwoIsolatedSubGraphs();
+		Set<LinkedList<String>> expectedResult = new HashSet<>();
 
 		// When
-		Set<LinkedList<String>> actualResult = underTest.calculatePaths(graph, NODE_A, NODE_D);
+		Set<LinkedList<String>> actualResult =
+				pathDepthFirstSearchCalculatorService.calculatePaths(graph, NODE_A, NODE_D);
 
 		// Then
-		Set<LinkedList<String>> expectedResult = new HashSet<>();
 		Assertions.assertIterableEquals(expectedResult, actualResult);
 	}
 
@@ -207,12 +246,13 @@ class PathDepthFirstSearchCalculatorServiceImplTest {
 		Map<String, LinkedHashSet<String>> graphMap = new HashMap<>();
 		graphMap.put(NODE_A, new LinkedHashSet<>());
 		Graph graph = new Graph(graphMap);
+		Set<LinkedList<String>> expectedResult = new HashSet<>();
 
 		// When
-		Set<LinkedList<String>> actualResult = underTest.calculatePaths(graph, NODE_A, NODE_A);
+		Set<LinkedList<String>> actualResult =
+				pathDepthFirstSearchCalculatorService.calculatePaths(graph, NODE_A, NODE_A);
 
 		// Then
-		Set<LinkedList<String>> expectedResult = new HashSet<>();
 		Assertions.assertIterableEquals(expectedResult, actualResult);
 	}
 
@@ -222,12 +262,13 @@ class PathDepthFirstSearchCalculatorServiceImplTest {
 		Map<String, LinkedHashSet<String>> graphMap = new HashMap<>();
 		graphMap.put(NODE_A, new LinkedHashSet<>());
 		Graph graph = new Graph(graphMap);
+		Set<LinkedList<String>> expectedResult = new HashSet<>();
 
 		// When
-		Set<LinkedList<String>> actualResult = underTest.calculatePaths(graph, NODE_A, NODE_B);
+		Set<LinkedList<String>> actualResult =
+				pathDepthFirstSearchCalculatorService.calculatePaths(graph, NODE_A, NODE_B);
 
 		// Then
-		Set<LinkedList<String>> expectedResult = new HashSet<>();
 		Assertions.assertIterableEquals(expectedResult, actualResult);
 	}
 
@@ -237,12 +278,13 @@ class PathDepthFirstSearchCalculatorServiceImplTest {
 		Graph graph = getGraphWithTwoPathsFromAToC();
 		LinkedList<String> firstPath = new LinkedList<>(Arrays.asList(NODE_A, NODE_B, NODE_C));
 		LinkedList<String> secondPath = new LinkedList<>(Arrays.asList(NODE_A, NODE_C));
+		Set<LinkedList<String>> expectedResult = new HashSet<>(Arrays.asList(firstPath, secondPath));
 
 		// When
-		Set<LinkedList<String>> actualResult = underTest.calculatePaths(graph, NODE_A, NODE_C);
+		Set<LinkedList<String>> actualResult =
+				pathDepthFirstSearchCalculatorService.calculatePaths(graph, NODE_A, NODE_C);
 
 		// Then
-		Set<LinkedList<String>> expectedResult = new HashSet<>(Arrays.asList(firstPath, secondPath));
 		Assertions.assertIterableEquals(expectedResult, actualResult);
 	}
 

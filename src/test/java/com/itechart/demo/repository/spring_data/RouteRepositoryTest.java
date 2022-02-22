@@ -54,12 +54,12 @@ class RouteRepositoryTest {
 		City secondCity = new City(CITY_NAME_LA);
 		saveCitiesToDatabase(Arrays.asList(firstCity, secondCity));
 		routeRepository.save(new Route(firstCity, secondCity, DISTANCE));
+		int expectedResultListSize = 1;
 
 		// When
 		List<Route> routeList = routeRepository.findRoutesByFirstCity(firstCity);
 
 		// Then
-		int expectedResultListSize = 1;
 		assertThat(routeList).asList().size().isEqualTo(expectedResultListSize);
 	}
 

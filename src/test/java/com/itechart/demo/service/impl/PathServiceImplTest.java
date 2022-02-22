@@ -13,7 +13,6 @@ import com.itechart.demo.service.exception.PathNotFoundException;
 import com.itechart.demo.service.exception.RouteNotFoundException;
 import com.itechart.demo.service.model.Graph;
 import com.itechart.demo.service.model.Path;
-import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -55,15 +54,14 @@ class PathServiceImplTest {
 	private static final Long ID_3 = 3L;
 	private static final Float DISTANCE = 10F;
 
-	private PathServiceImpl underTest;
+	private PathServiceImpl pathService;
 
 	@BeforeEach
 	void setUp() {
-		underTest = new PathServiceImpl(pathDepthFirstSearchCalculatorService,
+		pathService = new PathServiceImpl(pathDepthFirstSearchCalculatorService,
 				citiesAndRoutesToGraphConverter,
 				routeService,
 				cityService);
-
 	}
 
 	@AfterEach
@@ -88,36 +86,19 @@ class PathServiceImplTest {
 		Mockito.doReturn(stringPaths).when(pathDepthFirstSearchCalculatorService)
 				.calculatePaths(graph, cityA.getName(), cityC.getName());
 
-		Answer<Route> answerGetRouteBetweenTwoCities = invocationOnMock -> {
-			int firstCityArgNumber = 0;
-			int secondCityArgNumber = 1;
-			City firstCity = invocationOnMock.getArgument(firstCityArgNumber, City.class);
-			City secondCity = invocationOnMock.getArgument(secondCityArgNumber, City.class);
-			return routes.stream().filter(route -> route.getFirstCity().equals(firstCity)
-					&& route.getSecondCity().equals(secondCity)).findAny().get();
-		};
-		Answer<City> answerGetCityByName = invocationOnMock -> {
-			int cityNameArgNumber = 0;
-			String cityName = invocationOnMock.getArgument(cityNameArgNumber, String.class);
-			return cities.stream().filter(city -> city.getName().equals(cityName)).findAny().get();
-		};
-
-		Answer<City> answerGetCityById = invocationOnMock -> {
-			int idArgNumber = 0;
-			Long arg = invocationOnMock.getArgument(idArgNumber, Long.class);
-			return cities.stream().filter(city -> city.getId().equals(arg)).findAny().get();
-		};
-		Mockito.when(cityService.findById(ArgumentMatchers.any())).thenAnswer(answerGetCityById);
-		Mockito.when(cityService.findByName(ArgumentMatchers.anyString())).thenAnswer(answerGetCityByName);
+		Mockito.when(cityService.findById(ArgumentMatchers.any()))
+				.thenAnswer(invocationOnMock -> getCityById(cities, invocationOnMock));
+		Mockito.when(cityService.findByName(ArgumentMatchers.anyString()))
+				.thenAnswer(invocationOnMock -> getCityByName(cities, invocationOnMock));
 		Mockito.when(routeService.findRouteBetweenCities(ArgumentMatchers.any(City.class),
 						ArgumentMatchers.any(City.class)))
-				.thenAnswer(answerGetRouteBetweenTwoCities);
+				.thenAnswer(invocationOnMock -> getRouteBetweenTwoCities(routes, invocationOnMock));
+		Set<Path> expectedResult = getPathsFromRoutesForTestGetPathsReturnsTwoPaths(routes);
 
 		// When
-		Set<Path> actualResult = underTest.getPaths(ID_1, ID_3);
+		Set<Path> actualResult = pathService.getPaths(ID_1, ID_3);
 
 		// Then
-		Set<Path> expectedResult = getPathsFromRoutesForTestGetPathsReturnsTwoPaths(routes);
 		Mockito.verify(cityService).findById(cityA.getId());
 		Mockito.verify(cityService).findById(cityC.getId());
 		Mockito.verify(pathDepthFirstSearchCalculatorService).calculatePaths(graph, cityA.getName(), cityC.getName());
@@ -137,18 +118,15 @@ class PathServiceImplTest {
 		Mockito.doReturn(routes).when(routeService).findAll();
 		Set<LinkedList<String>> stringPaths = new HashSet<>();
 
-		Answer<City> answerGetCityById = invocationOnMock -> {
-			Long arg = invocationOnMock.getArgument(0, Long.class);
-			return cities.stream().filter(city -> city.getId().equals(arg)).findAny().get();
-		};
-		Mockito.when(cityService.findById(ArgumentMatchers.any())).thenAnswer(answerGetCityById);
+		Mockito.when(cityService.findById(ArgumentMatchers.any()))
+				.thenAnswer(invocationOnMock -> getCityById(cities, invocationOnMock));
 		Mockito.doReturn(stringPaths).when(pathDepthFirstSearchCalculatorService)
 				.calculatePaths(ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any());
 
 		// When
 		// Then
 		Assertions.assertThrows(PathNotFoundException.class,
-				() -> underTest.getPaths(firstCity.getId(), secondCity.getId()));
+				() -> pathService.getPaths(firstCity.getId(), secondCity.getId()));
 	}
 
 	/**
@@ -202,5 +180,26 @@ class PathServiceImplTest {
 		Float totalDistancePathTwo = 10F;
 		secondPath.setTotalDistance(totalDistancePathTwo);
 		return new HashSet<>(Arrays.asList(firstPath, secondPath));
+	}
+
+	private City getCityById(List<City> cities, InvocationOnMock invocationOnMock) {
+		int idArgNumber = 0;
+		Long arg = invocationOnMock.getArgument(idArgNumber, Long.class);
+		return cities.stream().filter(city -> city.getId().equals(arg)).findAny().get();
+	}
+
+	private Route getRouteBetweenTwoCities(List<Route> routes, InvocationOnMock invocationOnMock) {
+		int firstCityArgNumber = 0;
+		int secondCityArgNumber = 1;
+		City firstCity = invocationOnMock.getArgument(firstCityArgNumber, City.class);
+		City secondCity = invocationOnMock.getArgument(secondCityArgNumber, City.class);
+		return routes.stream().filter(route -> route.getFirstCity().equals(firstCity)
+				&& route.getSecondCity().equals(secondCity)).findAny().get();
+	}
+
+	private City getCityByName(List<City> cities, InvocationOnMock invocationOnMock) {
+		int cityNameArgNumber = 0;
+		String cityName = invocationOnMock.getArgument(cityNameArgNumber, String.class);
+		return cities.stream().filter(city -> city.getName().equals(cityName)).findAny().get();
 	}
 }
